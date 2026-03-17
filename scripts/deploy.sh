@@ -140,21 +140,27 @@ deploy_to_cloudbase() {
     # 部署云函数
     log_info "部署云函数..."
     cd cloud-functions
-    cloudbase functions:deploy user -e your-env-id
-    cloudbase functions:deploy word -e your-env-id
-    cloudbase functions:deploy review -e your-env-id
-    cloudbase functions:deploy sync -e your-env-id
+    
+    # 设置环境变量
+    export TCB_ENV=tengfei-workstation-7czc7ab13ca3
+    
+    # 部署所有云函数
+    log_info "部署用户服务云函数..."
+    cloudbase functions:deploy user -e $TCB_ENV
+    
+    log_info "部署生词服务云函数..."
+    cloudbase functions:deploy word -e $TCB_ENV
+    
+    log_info "部署复习服务云函数..."
+    cloudbase functions:deploy review -e $TCB_ENV
+    
     cd ..
     
     # 部署数据库
     log_info "初始化数据库..."
-    node database/init.js
+    node database/init.js --env $TCB_ENV
     
-    # 部署静态网站（Web端）
-    log_info "部署Web端..."
-    cd client-web
-    cloudbase hosting:deploy dist -e your-env-id
-    cd ..
+    log_success "云函数和数据库部署完成！"
     
     log_success "部署完成！"
 }

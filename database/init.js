@@ -5,10 +5,25 @@
 
 const cloud = require('wx-server-sdk');
 
+// 解析命令行参数
+const args = process.argv.slice(2);
+let targetEnv = cloud.DYNAMIC_CURRENT_ENV;
+
+// 检查是否有环境参数
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--env' && args[i + 1]) {
+    targetEnv = args[i + 1];
+    console.log(`🎯 目标环境: ${targetEnv}`);
+    break;
+  }
+}
+
 // 初始化云开发
 cloud.init({
-  env: cloud.DYNAMIC_CURRENT_ENV
+  env: targetEnv
 });
+
+console.log(`🚀 开始初始化数据库，环境: ${targetEnv}`);
 
 const db = cloud.database();
 

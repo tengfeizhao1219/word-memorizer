@@ -1,0 +1,15 @@
+{
+  "name": "word-memorizer-cloud-functions",
+  "version": "1.0.0",
+  "description": "多端同步生词本 - 云函数",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  },
+  "devDependencies": {},
+  "author": "Word Memorizer Team",
+  "license": "MIT"
+}

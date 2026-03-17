@@ -1,0 +1,66 @@
+{
+  "env": "tengfei-workstation-7czc7ab13ca3",
+  "region": "ap-shanghai",
+  "functions": [
+    {
+      "name": "user-login",
+      "timeout": 5,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "user-getInfo",
+      "timeout": 5,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "word-add",
+      "timeout": 10,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "word-list",
+      "timeout": 10,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "word-detail",
+      "timeout": 10,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "word-search",
+      "timeout": 10,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "word-import",
+      "timeout": 30,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "word-export",
+      "timeout": 30,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "review-getToday",
+      "timeout": 10,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    },
+    {
+      "name": "review-submit",
+      "timeout": 10,
+      "envVariables": {},
+      "runtime": "Nodejs16.13"
+    }
+  ]
+}
