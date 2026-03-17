@@ -15,6 +15,11 @@
 
 ## 🚀 快速开始
 
+### 📦 当前开发状态
+**版本**: v0.5.0 (开发中)  
+**状态**: 核心功能开发阶段  
+**预计上线**: 2026年4月初  
+
 ### 环境要求
 - Node.js 16+
 - 微信开发者工具
@@ -27,17 +32,13 @@
 git clone https://github.com/tengfeizhao1219/word-memorizer.git
 cd word-memorizer
 
-# 安装小程序依赖
-cd client-mini
-npm install
+# 一键安装所有依赖
+./scripts/deploy.sh init
 
-# 安装Web端依赖  
-cd ../client-web
-npm install
-
-# 安装云函数依赖
-cd ../cloud-functions
-npm install
+# 或者手动安装
+cd client-mini && npm install
+cd ../client-web && npm install
+cd ../cloud-functions && find . -name "package.json" -exec dirname {} \; | xargs -I {} sh -c 'cd {} && npm install'
 ```
 
 ### 配置说明
@@ -45,6 +46,22 @@ npm install
 1. **小程序配置**：修改 `client-mini/manifest.json` 中的 appid
 2. **云开发配置**：修改 `cloud-functions/config.js` 中的环境ID
 3. **API配置**：根据需要配置词典API密钥
+
+### 🎯 已实现功能
+- ✅ 微信一键登录
+- ✅ 用户信息管理
+- ✅ 生词添加（单个/批量）
+- ✅ 生词列表查询（分页/筛选/排序）
+- ✅ 今日复习提醒
+- ✅ 学习数据统计
+- ✅ 现代化UI界面
+
+### 🔄 开发中功能
+- 🔄 生词详情/编辑/删除
+- 🔄 艾宾浩斯复习系统
+- 🔄 多端数据同步
+- 🔄 分类管理
+- 🔄 搜索功能
 
 ### 运行项目
 
