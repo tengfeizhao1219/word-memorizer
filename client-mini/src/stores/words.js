@@ -324,6 +324,156 @@ export const useWordsStore = defineStore('words', () => {
     }
   }
 
+  // 批量导入生词
+  async function importWords(words, options = {}) {
+    if (!userStore.isLoggedIn) {
+      showToast('请先登录', 'error')
+      return null
+    }
+    
+    loading.value = true
+    
+    try {
+      // 这里应该调用导入API
+      // 暂时模拟导入过程
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      const result = {
+        total: words.length,
+        success: words.length,
+        failed: 0,
+        skipped: 0,
+        details: words.map(word => ({
+          word: word.word || word,
+          status: 'created'
+        }))
+      }
+      
+      // 导入成功后刷新列表
+      await getWordList()
+      
+      showToast(`导入完成：成功 ${result.success} 个生词`, 'success')
+      return result
+    } catch (error) {
+      console.error('导入生词失败:', error)
+      showToast('导入生词失败', 'error')
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 导出生词
+  async function exportWords(options = {}) {
+    if (!userStore.isLoggedIn) {
+      showToast('请先登录', 'error')
+      return null
+    }
+    
+    loading.value = true
+    
+    try {
+      // 这里应该调用导出API
+      // 暂时模拟导出过程
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      const exportData = {
+        filename: `word_memorizer_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.${options.format || 'xlsx'}`,
+        format: options.format || 'excel',
+        count: wordList.value.length,
+        downloadUrl: 'https://example.com/export/' + Date.now()
+      }
+      
+      showToast(`导出成功，共 ${exportData.count} 个生词`, 'success')
+      return exportData
+    } catch (error) {
+      console.error('导出生词失败:', error)
+      showToast('导出生词失败', 'error')
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 获取导出统计
+  async function getExportStats(options = {}) {
+    if (!userStore.isLoggedIn) {
+      return {
+        totalWords: 0,
+        categories: 0,
+        estimatedSize: '0 KB'
+      }
+    }
+    
+    try {
+      // 这里应该调用API获取实际统计
+      // 暂时返回基于本地数据的统计
+      const filteredWords = filterWordsByExportOptions(options)
+      
+      return {
+        totalWords: filteredWords.length,
+        categories: getUniqueCategories(filteredWords).length,
+        estimatedSize: Math.ceil(filteredWords.length * 0.5) + ' KB'
+      }
+    } catch (error) {
+      console.error('获取导出统计失败:', error)
+      return {
+        totalWords: 0,
+        categories: 0,
+        estimatedSize: '0 KB'
+      }
+    }
+  }
+
+  // 根据导出选项过滤生词
+  function filterWordsByExportOptions(options) {
+    let filtered = [...wordList.value]
+    
+    // 范围筛选
+    if (options.range && options.range !== 'all') {
+      switch (options.range) {
+        case 'learning':
+          filtered = filtered.filter(word => word.status === 'learning')
+          break
+        case 'review':
+          const now = Date.now()
+          filtered = filtered.filter(word => 
+            word.nextReview && word.nextReview <= now
+          )
+          break
+        case 'mastered':
+          filtered = filtered.filter(word => word.status === 'mastered')
+          break
+      }
+    }
+    
+    // 分类筛选
+    if (options.categories && options.categories.length > 0) {
+      filtered = filtered.filter(word => 
+        word.categories && word.categories.some(category => 
+          options.categories.includes(category)
+        )
+      )
+    }
+    
+    return filtered
+  }
+
+  // 获取唯一分类列表
+  function getUniqueCategories(words) {
+    const categories = new Set()
+    
+    words.forEach(word => {
+      if (word.categories && Array.isArray(word.categories)) {
+        word.categories.forEach(category => {
+          categories.add(category)
+        })
+      }
+    })
+    
+    return Array.from(categories)
+  }
+
   // 显示消息提示
   function showToast(message, type = 'info') {
     uni.showToast({
@@ -359,6 +509,9 @@ export const useWordsStore = defineStore('words', () => {
     deleteWord,
     searchWords,
     clearSearch,
-    setPage
+    setPage,
+    importWords,
+    exportWords,
+    getExportStats
   }
 })

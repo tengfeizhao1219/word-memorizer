@@ -55,6 +55,14 @@
         "navigationBarBackgroundColor": "#007aff",
         "navigationBarTextStyle": "white"
       }
+    },
+    {
+      "path": "pages/import-export/import-export",
+      "style": {
+        "navigationBarTitleText": "导入/导出",
+        "navigationBarBackgroundColor": "#007aff",
+        "navigationBarTextStyle": "white"
+      }
     }
   ],
   "globalStyle": {
