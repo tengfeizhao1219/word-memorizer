@@ -1,0 +1,19 @@
+{
+  "name": "category-create",
+  "version": "1.0.0",
+  "description": "创建生词分类云函数",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@cloudbase/node-sdk": "^2.10.0"
+  },
+  "keywords": [
+    "category",
+    "create",
+    "word-memorizer"
+  ],
+  "author": "AI Assistant",
+  "license": "MIT"
+}
