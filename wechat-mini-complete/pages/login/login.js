@@ -210,7 +210,6 @@ Page({
     
     return mockUserData;
   },
-  },
 
   /**
    * 显示手机登录
