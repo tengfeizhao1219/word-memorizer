@@ -74,7 +74,7 @@ Page({
         if (res.code) {
           // 调用云函数登录
           wx.cloud.callFunction({
-            name: 'login',
+            name: 'user-login',
             data: {
               action: 'login',
               code: res.code,
@@ -82,18 +82,20 @@ Page({
             },
             success: (cloudRes) => {
               wx.hideLoading()
+              console.log('云函数返回:', cloudRes)
               
-              if (cloudRes.result && cloudRes.result.success) {
+              if (cloudRes.result && (cloudRes.result.success || cloudRes.result.code === 0)) {
                 // 登录成功
                 wx.showToast({
-                  title: '登录成功',
+                  title: cloudRes.result.message || '登录成功',
                   icon: 'success'
                 })
                 
                 // 保存用户数据
-                const userData = cloudRes.result.data
-                wx.setStorageSync('userId', userData.userId)
-                wx.setStorageSync('userStats', userData.stats || {})
+                const userData = cloudRes.result.data || {}
+                wx.setStorageSync('userId', userData.userId || '')
+                wx.setStorageSync('userInfo', userData.userInfo || {})
+                wx.setStorageSync('userStats', userData.userInfo?.stats || {})
                 
                 // 跳转到首页
                 setTimeout(() => {
@@ -145,33 +147,69 @@ Page({
   /**
    * 使用模拟登录（开发环境）
    */
+    /**
+   * 使用模拟登录（开发环境）
+   * 当云环境不可用时使用
+   */
   useMockLogin(userInfo) {
-    // 模拟用户数据
+    console.log('🔧 使用模拟登录函数');
+    console.log('用户信息:', userInfo);
+    
+    // 生成模拟用户数据
     const mockUserData = {
-      userId: 'user_' + Date.now(),
-      stats: {
-        totalWords: 0,
-        todayReviewCount: 0,
-        streakDays: 1,
-        masteryRate: 0
-      }
-    }
+      userId: 'mock_user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+      userInfo: {
+        nickName: userInfo.nickName || '测试用户',
+        avatarUrl: userInfo.avatarUrl || '',
+        stats: {
+          totalWords: Math.floor(Math.random() * 100),
+          todayReviewCount: Math.floor(Math.random() * 20),
+          streakDays: Math.floor(Math.random() * 30) + 1,
+          masteryRate: Math.floor(Math.random() * 100)
+        },
+        settings: {
+          dailyGoal: 20,
+          notificationEnabled: true,
+          darkMode: false
+        }
+      },
+      token: 'mock_token_' + Date.now(),
+      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7天后过期
+    };
     
-    // 保存模拟数据
-    wx.setStorageSync('userId', mockUserData.userId)
-    wx.setStorageSync('userStats', mockUserData.stats)
+    console.log('📋 模拟用户数据:', mockUserData);
     
+    // 保存到本地存储
+    wx.setStorageSync('userId', mockUserData.userId);
+    wx.setStorageSync('userInfo', mockUserData.userInfo);
+    wx.setStorageSync('userStats', mockUserData.userInfo.stats);
+    wx.setStorageSync('userSettings', mockUserData.userInfo.settings);
+    wx.setStorageSync('authToken', mockUserData.token);
+    wx.setStorageSync('tokenExpiresAt', mockUserData.expiresAt);
+    wx.setStorageSync('isMockUser', true);
+    wx.setStorageSync('lastLoginTime', Date.now());
+    
+    // 显示成功提示
     wx.showToast({
-      title: '开发模式登录成功',
-      icon: 'success'
-    })
+      title: '模拟登录成功',
+      icon: 'success',
+      duration: 2000
+    });
     
-    // 跳转到首页
+    // 记录登录事件
+    console.log('✅ 模拟登录成功，用户ID:', mockUserData.userId);
+    console.log('   昵称:', mockUserData.userInfo.nickName);
+    console.log('   统计:', mockUserData.userInfo.stats);
+    
+    // 延迟跳转，让用户看到提示
     setTimeout(() => {
       wx.switchTab({
         url: '/pages/index/index'
-      })
-    }, 1000)
+      });
+    }, 1500);
+    
+    return mockUserData;
+  }, 1000)
   },
 
   /**
