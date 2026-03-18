@@ -1,272 +1,206 @@
-# Word Memorizer - 多端同步生词本
+# 📚 生词本 - 智能单词记忆小程序
 
-## 🎯 项目概述
-
-**Word Memorizer** 是一款轻量、免费、多端同步的英语生词本应用，专为英语学习者设计。支持微信小程序和Web端，数据实时同步，帮助您随时随地记录和复习生词。
-
-## ✨ 核心特性
-
-- **📱 多端同步** - 微信小程序 + Web端，数据实时同步
-- **🔍 智能查询** - 英汉/汉英双向查询，含读音、释义、例句
-- **📊 科学复习** - 艾宾浩斯记忆曲线，智能安排复习计划
-- **🏷️ 分类管理** - 自定义分类/标签，针对性复习
-- **📈 学习统计** - 可视化学习数据，追踪学习进度
-- **🔄 导入导出** - 支持Excel/CSV/Anki格式导入导出
+基于艾宾浩斯记忆曲线的智能单词记忆工具，帮助用户科学、高效地记忆单词。
 
 ## 🚀 快速开始
 
-### 📦 当前开发状态
-**版本**: v0.5.0 (开发中)  
-**状态**: 核心功能开发阶段  
-**预计上线**: 2026年4月初  
-
-### 环境要求
-- Node.js 16+
-- 微信开发者工具
-- 腾讯云账号（云开发）
-
-### 安装步骤
-
+### 1. 下载项目
 ```bash
-# 克隆项目
 git clone https://github.com/tengfeizhao1219/word-memorizer.git
 cd word-memorizer
-
-# 一键安装所有依赖
-./scripts/deploy.sh init
-
-# 或者手动安装
-cd client-mini && npm install
-cd ../client-web && npm install
-cd ../cloud-functions && find . -name "package.json" -exec dirname {} \; | xargs -I {} sh -c 'cd {} && npm install'
 ```
 
-### 配置说明
+### 2. 导入到微信开发者工具
+1. 打开微信开发者工具
+2. 点击「导入项目」
+3. 选择目录: `word-memorizer/client-mini-wechat`
+4. AppID: `wx1ccb4d171dd88162`
+5. 项目名称: 生词本
+6. 点击「导入」
 
-1. **小程序配置**：修改 `client-mini/manifest.json` 中的 appid
-2. **云开发配置**：修改 `cloud-functions/config.js` 中的环境ID
-3. **API配置**：根据需要配置词典API密钥
+### 3. 配置腾讯云环境
+1. 环境ID: `tengfei-workstation-7czc7ab13ca3`
+2. 地域: `ap-shanghai`
+3. 确保数据库集合已创建（5个）
 
-### 🎯 已实现功能
-- ✅ 微信一键登录
-- ✅ 用户信息管理
-- ✅ 生词添加（单个/批量）
-- ✅ 生词列表查询（分页/筛选/排序）
-- ✅ 今日复习提醒
-- ✅ 学习数据统计
-- ✅ 现代化UI界面
-
-### 🔄 开发中功能
-- 🔄 生词详情/编辑/删除
-- 🔄 艾宾浩斯复习系统
-- 🔄 多端数据同步
-- 🔄 分类管理
-- 🔄 搜索功能
-
-### 运行项目
-
-```bash
-# 运行小程序（HBuilderX）
-# 1. 打开HBuilderX
-# 2. 导入 client-mini 目录
-# 3. 运行到小程序模拟器
-
-# 运行Web端
-cd client-web
-npm run dev
-
-# 部署云函数
-cd cloud-functions
-# 使用云开发控制台或命令行工具部署
-```
+### 4. 运行测试
+1. 点击「编译」按钮
+2. 在控制台测试连接
+3. 验证基本功能
 
 ## 📁 项目结构
 
 ```
 word-memorizer/
-├── README.md                    # 项目说明
-├── docs/                        # 项目文档
-│   ├── api.md                   # API接口文档
-│   ├── database.md              # 数据库设计
-│   ├── deploy.md                # 部署指南
-│   └── design-doc.md            # 详细设计文档
-├── client-mini/                 # 小程序端 (uni-app)
-│   ├── src/
-│   │   ├── pages/               # 页面文件
-│   │   ├── components/          # 公共组件
-│   │   ├── stores/              # 状态管理
-│   │   ├── utils/               # 工具函数
-│   │   └── api/                 # API接口
-│   ├── package.json
-│   └── manifest.json            # 小程序配置
-├── client-web/                  # Web端 (Vue3)
-│   ├── src/
-│   │   ├── pages/               # 页面组件
-│   │   ├── components/          # 公共组件
-│   │   ├── stores/              # 状态管理
-│   │   ├── utils/               # 工具函数
-│   │   └── api/                 # API接口
-│   ├── package.json
-│   └── vite.config.js           # Vite配置
-├── cloud-functions/             # 云函数
-│   ├── user/                    # 用户相关
-│   ├── word/                    # 生词相关
-│   ├── review/                  # 复习相关
-│   └── sync/                    # 同步相关
-├── database/                    # 数据库脚本
-│   └── init.js                  # 数据库初始化
-└── scripts/                     # 辅助脚本
-    ├── deploy.sh                # 部署脚本
-    └── backup.js                # 备份脚本
+├── 📱 client-mini-wechat/      # 微信小程序原生版本（主版本）
+├── 📱 client-mini/            # Uni-app版本（备用）
+├── ☁️ cloud-functions/        # 腾讯云云函数
+├── 🗄️ database/              # 数据库配置
+├── 📚 docs/                  # 所有文档和指南
+├── 🔧 scripts/               # 工具脚本
+├── 🧪 tests/                 # 测试代码
+└── 📄 项目配置文件
 ```
+
+详细结构说明请查看 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)
+
+## 📚 文档目录
+
+所有文档都集中在 `docs/` 目录下：
+
+### 使用指南 (`docs/guides/`)
+- [快速开始指南](docs/guides/QUICK_START.md)
+- [用户使用手册](docs/guides/USER_GUIDE.md)
+- [开发者指南](docs/guides/DEVELOPER_GUIDE.md)
+- [常见问题解答](docs/guides/FAQ.md)
+
+### 部署文档 (`docs/deployment/`)
+- [部署检查清单](docs/deployment/DEPLOYMENT_CHECKLIST.md)
+- [腾讯云配置指南](docs/deployment/TENCENT_CLOUD_SETUP.md)
+- [微信开发者工具配置](docs/deployment/WECHAT_DEV_TOOL_SETUP.md)
+- [故障排除指南](docs/deployment/TROUBLESHOOTING.md)
+
+### 配置文档 (`docs/configuration/`)
+- [API接口文档](docs/configuration/API_DOCUMENTATION.md)
+- [数据库设计文档](docs/configuration/DATABASE_SCHEMA.md)
+- [环境配置说明](docs/configuration/ENVIRONMENT_CONFIG.md)
+- [安全配置指南](docs/configuration/SECURITY_CONFIG.md)
 
 ## 🔧 技术栈
 
-### 前端技术栈
-- **小程序框架**: uni-app 3.x
-- **Web框架**: Vue 3 + Composition API
-- **构建工具**: Vite 5.x
-- **UI组件库**: uView Plus 3.x
-- **状态管理**: Pinia 2.x
-- **HTTP客户端**: uni.request / axios
+### 前端
+- **微信小程序原生开发**
+- 使用微信小程序云开发
+- 支持云函数调用
+- 响应式设计
 
-### 后端技术栈
-- **云平台**: 腾讯云云开发 (CloudBase)
-- **云函数**: Node.js 16.x
-- **数据库**: 云开发数据库 (MongoDB兼容)
-- **存储**: 云存储 (5GB免费额度)
-- **认证**: 微信登录 + 云开发Auth
+### 后端
+- **腾讯云云开发**
+- 云函数（Node.js）
+- 文档型数据库
+- 云存储
 
 ### 开发工具
-- **小程序开发**: HBuilderX
-- **Web开发**: VS Code
-- **接口调试**: Apifox
-- **版本控制**: Git + GitHub
-- **项目管理**: GitHub Projects
+- 微信开发者工具
+- Git版本控制
+- 腾讯云控制台
 
-## 📋 功能清单
+## 🎯 核心功能
 
-### P0 - 核心功能（必须实现）
-- ✅ 微信一键登录
-- ✅ 生词添加/编辑/删除
-- ✅ 生词列表与搜索
-- ✅ 多端数据同步
-- ✅ 单词查询（英汉/汉英）
-- ✅ 复习系统（艾宾浩斯）
+### 已实现
+- ✅ 用户登录（微信登录 + 游客模式）
+- ✅ 首页展示（用户信息、学习数据、功能入口）
+- ✅ 基础页面结构（8个页面路由）
 
-### P1 - 重要功能（应该实现）
-- 🔄 单词发音（英式/美式）
-- 🔄 生词分类/标签
-- 🔄 导入/导出功能
-- 🔄 学习数据统计
-
-### P2 - 扩展功能（可以实现）
-- 📅 OCR识别生词
-- 🤖 AI智能释义
-- 🔔 每日提醒推送
-- 👥 生词本分享
+### 开发中
+- 🔄 生词管理（添加、查看、编辑、删除）
+- 🔄 智能复习（基于艾宾浩斯记忆曲线）
+- 🔄 学习统计（进度、掌握率、连续学习天数）
+- 🔄 数据导入导出（Excel、CSV格式）
 
 ## 📊 数据库设计
 
-### 主要集合
-- **users** - 用户信息
-- **words** - 生词记录
-- **categories** - 分类/标签
-- **reviews** - 复习记录
-- **sync_logs** - 同步日志
+### 核心集合
+1. **users** - 用户信息
+2. **words** - 生词数据
+3. **categories** - 分类管理
+4. **reviews** - 复习记录
+5. **sync_logs** - 同步日志
 
-### 数据模型
-详细数据模型设计请参考 `docs/database.md`
+详细设计请查看 [数据库设计文档](docs/configuration/DATABASE_SCHEMA.md)
 
-## 🔌 API接口
+## 🚀 部署要求
 
-### 接口规范
-- 请求格式: JSON
-- 响应格式: `{ code, message, data, timestamp }`
-- 错误码: 0-成功，非0-失败
+### 腾讯云配置
+- ✅ 环境ID: `tengfei-workstation-7czc7ab13ca3`
+- ✅ 地域: `ap-shanghai`
+- ✅ 数据库: 5个集合
+- ✅ 云函数: 10个函数
 
-### 主要接口
-- **用户接口**: 登录、获取信息、更新设置
-- **生词接口**: 列表、添加、更新、删除、搜索
-- **复习接口**: 获取今日复习、提交复习结果
-- **同步接口**: 拉取同步数据、推送同步数据
+### 微信小程序配置
+- ✅ AppID: `wx1ccb4d171dd88162`
+- ✅ 项目名称: 生词本
+- ✅ 基础库版本: 最新稳定版
 
-详细API文档请参考 `docs/api.md`
+## 🧪 测试
 
-## 🚢 部署方案
+### 连接测试
+在微信开发者工具控制台运行：
+```javascript
+// 测试云开发连接
+wx.cloud.init({ env: 'tengfei-workstation-7czc7ab13ca3' })
 
-### 环境准备
-1. 注册微信小程序
-2. 开通腾讯云云开发
-3. 配置项目环境变量
+// 测试数据库
+const db = wx.cloud.database()
+db.collection('users').count().then(console.log)
 
-### 部署流程
-1. 部署云函数到云开发环境
-2. 构建小程序并上传审核
-3. 构建Web端并部署到服务器/CDN
+// 测试云函数
+wx.cloud.callFunction({ name: 'login', data: { action: 'test' } })
+```
 
-详细部署指南请参考 `docs/deploy.md`
+### 功能测试
+1. 首页显示测试
+2. 登录功能测试
+3. 页面跳转测试
+4. 数据操作测试
 
-## 📅 开发计划
+## 🔄 开发流程
 
-### 里程碑
-- **M1 - 项目启动** (第1天): 环境搭建完成
-- **M2 - 登录完成** (第3天): 可登录的小程序
-- **M3 - 生词CRUD** (第7天): 生词管理功能
-- **M4 - 多端同步** (第10天): 数据同步打通
-- **M5 - 复习系统** (第14天): 艾宾浩斯算法
-- **M6 - 测试优化** (第18天): 性能优化完成
-- **M7 - 上线发布** (第21天): 正式上线
+### 1. 环境搭建
+```bash
+# 克隆项目
+git clone https://github.com/tengfeizhao1219/word-memorizer.git
 
-详细开发计划请参考 `docs/development-plan.md`
+# 安装依赖（如果需要）
+cd word-memorizer/client-mini-wechat
+npm install
+```
 
-## 💰 成本预算
+### 2. 开发新功能
+1. 在 `client-mini-wechat/pages/` 创建新页面
+2. 在 `cloud-functions/` 添加云函数
+3. 更新相关文档
+4. 运行测试
 
-### 初期成本 (0-6个月)
-- 微信小程序认证: ¥0 (个人主体免费)
-- 腾讯云云开发: ¥0 (免费额度)
-- 域名/SSL证书: ¥0 (初期不需要)
-- **合计: ¥0** (完全免费)
+### 3. 提交代码
+```bash
+git add .
+git commit -m "feat: 添加新功能"
+git push origin master
+```
 
-### 云开发免费额度
-- 数据库: 2GB (¥40/月价值)
-- 存储: 5GB (¥10/月价值)
-- 云函数: 10万次调用/月 (¥50/月价值)
-- CDN: 5GB/月 (¥5/月价值)
-- **总价值: ¥105/月**
+## 📞 支持与反馈
 
-## ⚠️ 风险管理
+### 遇到问题？
+1. 查看 [常见问题解答](docs/guides/FAQ.md)
+2. 查看 [故障排除指南](docs/deployment/TROUBLESHOOTING.md)
+3. 检查控制台错误信息
+4. 提供详细的问题描述
 
-### 技术风险
-- 微信审核不通过: 提前阅读审核规范
-- 多端同步冲突: 实现乐观锁机制
-- 数据丢失: 云开发自动备份 + 手动备份
-- 性能瓶颈: 分页加载、索引优化、缓存
-
-### 成本风险
-- 用户增长过快: 设置用量监控告警
-- 存储超限: 限制单用户存储，压缩图片
-- 云函数超时: 优化代码，拆分大函数
-
-## 🤝 贡献指南
-
-欢迎提交Issue和Pull Request！
-
-1. Fork本仓库
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启Pull Request
+### 需要帮助？
+1. 提供具体的错误信息
+2. 提供相关截图
+3. 描述操作步骤
+4. 说明期望的结果
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
-## 📞 联系方式
+## 👥 贡献者
 
-- 项目地址: [https://github.com/tengfeizhao1219/word-memorizer](https://github.com/tengfeizhao1219/word-memorizer)
-- 问题反馈: [GitHub Issues](https://github.com/tengfeizhao1219/word-memorizer/issues)
+- **项目维护**: [tengfeizhao1219](https://github.com/tengfeizhao1219)
+- **技术支持**: OpenClaw AI Assistant
+
+## 🔗 相关链接
+
+- [GitHub仓库](https://github.com/tengfeizhao1219/word-memorizer)
+- [腾讯云控制台](https://tcb.cloud.tencent.com/dev)
+- [微信开发者文档](https://developers.weixin.qq.com/miniprogram/dev/framework/)
+- [腾讯云云开发文档](https://docs.cloudbase.net/)
 
 ---
 
-**让我们一起快快乐乐的记单词！** 🎉
+**最后更新**: 2026-03-18  
+**项目状态**: 开发中 - 首页和登录页已完成  
+**部署状态**: 腾讯云环境已配置，等待连接测试
