@@ -1,0 +1,139 @@
+<!-- pages/index/index.wxml -->
+<view class="page-container">
+  <!-- 状态栏背景 -->
+  <view class="status-bar-bg"></view>
+  
+  <!-- 用户信息卡片 (苹果风格毛玻璃效果) -->
+  <view class="user-card" wx:if="{{isLoggedIn}}">
+    <view class="user-header">
+      <image class="user-avatar" src="{{avatar}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <text class="user-name">{{nickname}}</text>
+        <text class="user-greeting">今天也要加油哦 ✨</text>
+      </view>
+      <view class="streak-badge">
+        <text class="streak-days">{{streakDays || 0}}</text>
+        <text class="streak-label">天</text>
+      </view>
+    </view>
+    
+    <!-- 学习数据统计 -->
+    <view class="stats-container">
+      <view class="stat-item" bindtap="navigateToWordList">
+        <text class="stat-number">{{totalWords}}</text>
+        <text class="stat-title">总生词</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item" bindtap="navigateToReview">
+        <text class="stat-number highlight">{{todayReviewCount}}</text>
+        <text class="stat-title">待复习</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-number">{{Math.round(masteryRate * 100) || 0}}%</text>
+        <text class="stat-title">掌握率</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 未登录状态 -->
+  <view class="welcome-card" wx:else>
+    <view class="welcome-content">
+      <view class="app-icon">
+        <text class="icon-text">📚</text>
+      </view>
+      <text class="welcome-title">生词本</text>
+      <text class="welcome-subtitle">科学记忆，高效学习</text>
+      <text class="welcome-desc">基于艾宾浩斯记忆曲线，让单词记忆更轻松</text>
+      <button class="login-button" bindtap="navigateToLogin">
+        <text class="button-text">开始使用</text>
+        <text class="button-icon">→</text>
+      </button>
+    </view>
+  </view>
+  
+  <!-- 主要功能入口 (苹果风格网格) -->
+  <view class="features-section" wx:if="{{isLoggedIn}}">
+    <text class="section-title">功能</text>
+    <view class="features-grid">
+      <view class="feature-card" bindtap="navigateToWordAdd" style="background-color: #5ac8fa;">
+        <text class="feature-icon">➕</text>
+        <text class="feature-name">添加生词</text>
+      </view>
+      <view class="feature-card" bindtap="navigateToReview" style="background-color: #34c759;">
+        <text class="feature-icon">📖</text>
+        <text class="feature-name">开始复习</text>
+      </view>
+      <view class="feature-card" bindtap="navigateToWordList" style="background-color: #ff9500;">
+        <text class="feature-icon">📋</text>
+        <text class="feature-name">生词列表</text>
+      </view>
+      <view class="feature-card" bindtap="navigateToStats" style="background-color: #af52de;">
+        <text class="feature-icon">📊</text>
+        <text class="feature-name">学习统计</text>
+      </view>
+      <view class="feature-card" bindtap="navigateToImportExport" style="background-color: #5856d6;">
+        <text class="feature-icon">🔄</text>
+        <text class="feature-name">导入导出</text>
+      </view>
+      <view class="feature-card" bindtap="showSettings" style="background-color: #8e8e93;">
+        <text class="feature-icon">⚙️</text>
+        <text class="feature-name">设置</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 今日复习提醒 (苹果风格通知卡片) -->
+  <view class="reminder-card" wx:if="{{isLoggedIn && todayReviewCount > 0}}">
+    <view class="reminder-header">
+      <text class="reminder-icon">⏰</text>
+      <view class="reminder-info">
+        <text class="reminder-title">复习提醒</text>
+        <text class="reminder-time">今天 · 建议完成</text>
+      </view>
+      <text class="reminder-count">{{todayReviewCount}}个</text>
+    </view>
+    <text class="reminder-message">根据记忆曲线，今天有{{todayReviewCount}}个生词需要复习</text>
+    <button class="reminder-button" bindtap="navigateToReview">
+      <text class="button-text">开始复习</text>
+    </button>
+  </view>
+  
+  <!-- 最近添加的生词 -->
+  <view class="recent-words-section" wx:if="{{isLoggedIn && recentWords.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">最近添加</text>
+      <text class="see-all" bindtap="navigateToWordList">查看全部</text>
+    </view>
+    <scroll-view class="words-scroll" scroll-x="true">
+      <view class="words-list">
+        <view class="word-card" wx:for="{{recentWords}}" wx:key="id" bindtap="viewWordDetail" data-id="{{item.id}}">
+          <text class="word-text">{{item.word}}</text>
+          <text class="word-meaning">{{item.meaning}}</text>
+          <view class="word-status" style="background-color: {{getStatusColor(item.status)}};">
+            <text class="status-text">{{getStatusText(item.status)}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  
+  <!-- 学习建议 -->
+  <view class="tips-section" wx:if="{{isLoggedIn}}">
+    <text class="section-title">学习建议</text>
+    <view class="tips-list">
+      <view class="tip-item">
+        <text class="tip-icon">💡</text>
+        <text class="tip-text">每天复习效果最佳，建议设置固定学习时间</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">📈</text>
+        <text class="tip-text">根据掌握情况调整复习频率，提高记忆效率</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">🔔</text>
+        <text class="tip-text">开启复习提醒，不错过任何学习机会</text>
+      </view>
+    </view>
+  </view>
+</view>
