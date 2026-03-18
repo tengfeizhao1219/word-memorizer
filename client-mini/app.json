@@ -16,38 +16,6 @@
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f8f9fa"
   },
-  "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#007AFF",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "black",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "static/tabbar/home.png",
-        "selectedIconPath": "static/tabbar/home-active.png"
-      },
-      {
-        "pagePath": "pages/word-list/word-list",
-        "text": "生词",
-        "iconPath": "static/tabbar/words.png",
-        "selectedIconPath": "static/tabbar/words-active.png"
-      },
-      {
-        "pagePath": "pages/review/review",
-        "text": "复习",
-        "iconPath": "static/tabbar/review.png",
-        "selectedIconPath": "static/tabbar/review-active.png"
-      },
-      {
-        "pagePath": "pages/stats/stats",
-        "text": "统计",
-        "iconPath": "static/tabbar/stats.png",
-        "selectedIconPath": "static/tabbar/stats-active.png"
-      }
-    ]
-  },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
