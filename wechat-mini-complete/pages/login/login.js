@@ -209,7 +209,7 @@ Page({
     }, 1500);
     
     return mockUserData;
-  }, 1000)
+  },
   },
 
   /**
