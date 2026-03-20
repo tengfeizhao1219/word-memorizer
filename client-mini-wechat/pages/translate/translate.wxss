@@ -1,0 +1,417 @@
+/* 翻译页面样式 */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20rpx;
+}
+
+/* 头部 */
+.header {
+  text-align: center;
+  padding: 40rpx 20rpx;
+  color: white;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+/* 语言选择器 */
+.language-selector {
+  margin: 30rpx 0;
+}
+
+.language-card {
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.1);
+}
+
+.language-from,
+.language-to {
+  flex: 1;
+}
+
+.language-label {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.language-picker {
+  background: #f5f3ff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+}
+
+.picker-view {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.language-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #7c3aed;
+}
+
+.language-code {
+  font-size: 24rpx;
+  color: #8b5cf6;
+  background: #ede9fe;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.swap-icon {
+  margin: 0 30rpx;
+}
+
+.swap-text {
+  font-size: 40rpx;
+  color: #7c3aed;
+  background: #ede9fe;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.swap-text:active {
+  transform: rotate(180deg);
+}
+
+/* 输入区域 */
+.input-section {
+  margin: 30rpx 0;
+}
+
+.input-card {
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.1);
+}
+
+.input-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  font-size: 32rpx;
+  line-height: 1.5;
+  border: 2rpx solid #e5e7eb;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 30rpx;
+  transition: border-color 0.3s;
+}
+
+.input-textarea:focus {
+  border-color: #7c3aed;
+  outline: none;
+}
+
+.input-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.clear-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.clear-btn:active {
+  background: #e5e7eb;
+}
+
+.translate-btn {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  color: white;
+}
+
+.translate-btn:disabled {
+  background: #d1d5db;
+  opacity: 0.7;
+}
+
+.translate-btn:active:not(:disabled) {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(124, 58, 237, 0.3);
+}
+
+/* 翻译结果 */
+.result-section {
+  margin: 30rpx 0;
+}
+
+.result-card {
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.1);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #f3f4f6;
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.result-provider {
+  font-size: 24rpx;
+  color: #10b981;
+  background: #d1fae5;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.original-text,
+.translated-text {
+  margin-bottom: 24rpx;
+}
+
+.original-label,
+.translated-label {
+  font-size: 28rpx;
+  color: #6b7280;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.original-content {
+  font-size: 36rpx;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.translated-content {
+  font-size: 40rpx;
+  color: #7c3aed;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 30rpx;
+}
+
+.result-btn {
+  flex: 1;
+  min-width: 200rpx;
+  border: none;
+  border-radius: 50rpx;
+  padding: 20rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.speak-btn {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.add-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.copy-btn {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.result-btn:active {
+  transform: translateY(2rpx);
+}
+
+/* 翻译历史 */
+.history-section {
+  margin: 30rpx 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: white;
+}
+
+.clear-history-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  padding: 12rpx 24rpx;
+  font-size: 24rpx;
+}
+
+.history-list {
+  max-height: 400rpx;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  transition: all 0.3s;
+}
+
+.history-item:active {
+  background: white;
+  transform: translateY(-2rpx);
+}
+
+.history-content {
+  margin-bottom: 16rpx;
+}
+
+.history-original {
+  font-size: 28rpx;
+  color: #374151;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.history-translated {
+  font-size: 32rpx;
+  color: #7c3aed;
+  font-weight: 600;
+  display: block;
+}
+
+.history-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+
+/* 使用提示 */
+.tips-section {
+  margin: 30rpx 0;
+}
+
+.tip-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  align-items: center;
+}
+
+.tip-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: #4b5563;
+  flex: 1;
+}
+
+/* 快速操作 */
+.quick-actions {
+  display: flex;
+  gap: 20rpx;
+  margin: 40rpx 0;
+}
+
+.quick-btn {
+  flex: 1;
+  background: white;
+  border: none;
+  border-radius: 50rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #7c3aed;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.quick-btn:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 错误提示 */
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin: 20rpx 0;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 40rpx;
+  color: white;
+}
+
+.spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20rpx;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

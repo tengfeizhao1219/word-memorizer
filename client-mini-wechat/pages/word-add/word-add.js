@@ -56,37 +56,51 @@ Page({
     this.setData({ loading: true });
 
     try {
-      // 这里会调用翻译云函数
-      // 暂时使用模拟数据
-      const mockTranslation = {
-        original: word,
-        translated: this.getMockTranslation(word),
-        source: 'en',
-        target: 'zh'
-      };
+      // 调用翻译云函数
+      const result = await wx.cloud.callFunction({
+        name: 'translate',
+        data: {
+          text: word,
+          source: 'en',
+          target: 'zh'
+        }
+      });
 
+      if (result.result && result.result.success) {
+        this.setData({
+          translationResult: result.result.data,
+          loading: false
+        });
+
+        wx.showToast({
+          title: result.result.data.isFallback ? '使用本地词典翻译' : '翻译成功',
+          icon: 'success'
+        });
+
+      } else {
+        throw new Error(result.result?.error || '翻译失败');
+      }
+
+    } catch (error) {
+      console.error('翻译失败:', error);
+      
+      // 使用本地降级
+      const fallbackTranslation = this.localFallbackTranslate(word);
+      
       this.setData({
-        translationResult: mockTranslation,
+        translationResult: fallbackTranslation,
         loading: false
       });
 
       wx.showToast({
-        title: '翻译成功',
-        icon: 'success'
-      });
-
-    } catch (error) {
-      console.error('翻译失败:', error);
-      this.setData({ loading: false });
-      wx.showToast({
-        title: '翻译失败，请手动输入',
+        title: '使用本地词典翻译',
         icon: 'none'
       });
     }
   },
 
-  // 模拟翻译（开发阶段）
-  getMockTranslation(word) {
+  // 本地降级翻译
+  localFallbackTranslate(word) {
     const mockDict = {
       'hello': '你好',
       'world': '世界',
@@ -99,7 +113,16 @@ Page({
       'time': '时间',
       'people': '人们'
     };
-    return mockDict[word.toLowerCase()] || '未找到翻译';
+    
+    const translated = mockDict[word.toLowerCase()];
+    
+    return {
+      original: word,
+      translated: translated || '未找到翻译',
+      source: 'en',
+      target: 'zh',
+      isFallback: true
+    };
   },
 
   // 使用翻译结果
