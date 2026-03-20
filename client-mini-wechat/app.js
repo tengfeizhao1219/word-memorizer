@@ -1,11 +1,9 @@
 // app.js
 App({
   onLaunch() {
-    // 初始化云开发 - 使用测试环境
-    // 原环境ID: 'tengfei-workstation-7czc7ab13ca3' 可能不存在
-    // 使用动态环境进行测试
+    // 初始化云开发 - 使用新的腾讯云环境
     wx.cloud.init({
-      env: wx.cloud.DYNAMIC_CURRENT_ENV, // 使用测试环境
+      env: 'cloud1-1g9313w0bb791de0', // 新的腾讯云环境ID
       traceUser: true
     })
     

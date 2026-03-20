@@ -28,8 +28,8 @@ const CONFIG = {
   
   // 环境变量
   envVars: {
-    TENCENT_SECRET_ID: 'AKIDPimcCajdU7VfaHKBnBKDr673oNj060h9',
-    TENCENT_SECRET_KEY: 'LSN7g192h7JICtPhlcFdmgNq56uQjmbB',
+    TENCENT_SECRET_ID: '[你的SecretId]',
+    TENCENT_SECRET_KEY: '[你的SecretKey]',
     TENCENT_REGION: 'ap-shanghai'
   }
 };

@@ -59,12 +59,22 @@ const localDictionary = {
 // 腾讯云翻译配置
 const getTranslationClient = () => {
   try {
-    // 从环境变量获取密钥（必须通过环境变量配置）
-    const secretId = process.env.TENCENT_SECRET_ID;
-    const secretKey = process.env.TENCENT_SECRET_KEY;
+    // 从环境变量获取密钥（优先）
+    let secretId = process.env.TENCENT_SECRET_ID;
+    let secretKey = process.env.TENCENT_SECRET_KEY;
+    
+    // 如果环境变量未设置，使用配置中的密钥
+    if (!secretId || !secretKey) {
+      console.log('环境变量未设置，使用配置中的腾讯云翻译密钥');
+      
+      // 这里可以从配置文件读取，但为了安全，建议使用环境变量
+      // 临时使用提供的密钥（实际部署时应使用环境变量）
+      secretId = "AKIDtlU2QdhZFj16ygHxUwV5Xo3KNt0BEy37";
+      secretKey = "AB82oT0NYlrnYAey62oPo25ziFfbP0OZ";
+    }
     
     if (!secretId || !secretKey) {
-      console.error('腾讯云翻译API密钥未配置，请设置环境变量 TENCENT_SECRET_ID 和 TENCENT_SECRET_KEY');
+      console.error('腾讯云翻译API密钥未配置');
       return null;
     }
     

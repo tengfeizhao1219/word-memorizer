@@ -47,10 +47,10 @@
 4. 添加以下3个变量：
 
 变量名：TENCENT_SECRET_ID
-变量值：AKIDPimcCajdU7VfaHKBnBKDr673oNj060h9
+变量值：[你的SecretId]
 
 变量名：TENCENT_SECRET_KEY  
-变量值：LSN7g192h7JICtPhlcFdmgNq56uQjmbB
+变量值：[你的SecretKey]
 
 变量名：TENCENT_REGION
 变量值：ap-shanghai

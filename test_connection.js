@@ -6,7 +6,7 @@ const cloud = require('wx-server-sdk');
 
 // 初始化云开发
 cloud.init({
-  env: 'tengfei-workspace-7ef9ma8b7670ea' // 新的环境ID
+  env: 'cloud1-1g9313w0bb791de0' // 新的环境ID
 });
 
 const db = cloud.database();
