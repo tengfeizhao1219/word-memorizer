@@ -3,10 +3,11 @@
 ## 🎯 API密钥信息（用户提供）
 
 ### 核心密钥
-- **SecretId**: `AKIDPimcCajdU7VfaHKBnBKDr673oNj060h9`
-- **SecretKey**: `LSN7g192h7JICtPhlcFdmgNq56uQjmbB`
+- **SecretId**: `[已通过环境变量配置]`
+- **SecretKey**: `[已通过环境变量配置]`
 - **提供时间**: 2026-03-20 18:11
 - **用途**: 单词本学习中英互译功能
+- **存储方式**: 环境变量（不在代码中硬编码）
 
 ### 服务信息
 - **服务名称**: 腾讯云机器翻译（文本翻译）
@@ -30,20 +31,21 @@ const secretKey = process.env.TENCENT_SECRET_KEY;
 
 ### 2. 本地开发配置（.env文件）
 ```env
-TENCENT_SECRET_ID=AKIDPimcCajdU7VfaHKBnBKDr673oNj060h9
-TENCENT_SECRET_KEY=LSN7g192h7JICtPhlcFdmgNq56uQjmbB
+# 请将你的腾讯云API密钥配置在这里
+TENCENT_SECRET_ID=你的SecretId
+TENCENT_SECRET_KEY=你的SecretKey
 TENCENT_REGION=ap-shanghai
 ```
 
-### 3. 腾讯云SDK配置
+### 3. 腾讯云SDK配置（使用环境变量）
 ```javascript
 const TencentCloud = require("tencentcloud-sdk-nodejs");
 const TmtClient = TencentCloud.tmt.v20180321.Client;
 
 const client = new TmtClient({
   credential: {
-    secretId: "AKIDPimcCajdU7VfaHKBnBKDr673oNj060h9",
-    secretKey: "LSN7g192h7JICtPhlcFdmgNq56uQjmbB",
+    secretId: process.env.TENCENT_SECRET_ID, // 从环境变量获取
+    secretKey: process.env.TENCENT_SECRET_KEY, // 从环境变量获取
   },
   region: "ap-shanghai",
   profile: {

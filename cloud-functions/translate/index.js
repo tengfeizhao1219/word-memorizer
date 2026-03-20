@@ -59,9 +59,14 @@ const localDictionary = {
 // 腾讯云翻译配置
 const getTranslationClient = () => {
   try {
-    // 从环境变量获取密钥（推荐方式）
-    const secretId = process.env.TENCENT_SECRET_ID || "AKIDPimcCajdU7VfaHKBnBKDr673oNj060h9";
-    const secretKey = process.env.TENCENT_SECRET_KEY || "LSN7g192h7JICtPhlcFdmgNq56uQjmbB";
+    // 从环境变量获取密钥（必须通过环境变量配置）
+    const secretId = process.env.TENCENT_SECRET_ID;
+    const secretKey = process.env.TENCENT_SECRET_KEY;
+    
+    if (!secretId || !secretKey) {
+      console.error('腾讯云翻译API密钥未配置，请设置环境变量 TENCENT_SECRET_ID 和 TENCENT_SECRET_KEY');
+      return null;
+    }
     
     return new TmtClient({
       credential: {
