@@ -1,139 +1,219 @@
-<!-- pages/index/index.wxml -->
+<!-- 首页 - 单词本学习系统 -->
 <view class="page-container">
-  <!-- 状态栏背景 -->
-  <view class="status-bar-bg"></view>
-  
-  <!-- 用户信息卡片 (苹果风格毛玻璃效果) -->
-  <view class="user-card" wx:if="{{isLoggedIn}}">
-    <view class="user-header">
-      <image class="user-avatar" src="{{avatar}}" mode="aspectFill"></image>
-      <view class="user-info">
-        <text class="user-name">{{nickname}}</text>
-        <text class="user-greeting">今天也要加油哦 ✨</text>
-      </view>
-      <view class="streak-badge">
-        <text class="streak-days">{{streakDays || 0}}</text>
-        <text class="streak-label">天</text>
-      </view>
+  <!-- 顶部导航栏 -->
+  <view class="top-nav">
+    <view class="nav-left">
+      <text class="app-name">📚 单词本</text>
     </view>
-    
-    <!-- 学习数据统计 -->
-    <view class="stats-container">
-      <view class="stat-item" bindtap="navigateToWordList">
-        <text class="stat-number">{{totalWords}}</text>
-        <text class="stat-title">总生词</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item" bindtap="navigateToReview">
-        <text class="stat-number highlight">{{todayReviewCount}}</text>
-        <text class="stat-title">待复习</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-number">{{Math.round(masteryRate * 100) || 0}}%</text>
-        <text class="stat-title">掌握率</text>
-      </view>
-    </view>
-  </view>
-  
-  <!-- 未登录状态 -->
-  <view class="welcome-card" wx:else>
-    <view class="welcome-content">
-      <view class="app-icon">
-        <text class="icon-text">📚</text>
-      </view>
-      <text class="welcome-title">生词本</text>
-      <text class="welcome-subtitle">科学记忆，高效学习</text>
-      <text class="welcome-desc">基于艾宾浩斯记忆曲线，让单词记忆更轻松</text>
-      <button class="login-button" bindtap="navigateToLogin">
-        <text class="button-text">开始使用</text>
-        <text class="button-icon">→</text>
+    <view class="nav-right">
+      <button class="btn btn-text" bindtap="goToSettings">
+        <text class="icon">⚙️</text>
       </button>
     </view>
   </view>
-  
-  <!-- 主要功能入口 (苹果风格网格) -->
-  <view class="features-section" wx:if="{{isLoggedIn}}">
-    <text class="section-title">功能</text>
-    <view class="features-grid">
-      <view class="feature-card" bindtap="navigateToWordAdd" style="background-color: #5ac8fa;">
-        <text class="feature-icon">➕</text>
-        <text class="feature-name">添加生词</text>
-      </view>
-      <view class="feature-card" bindtap="navigateToReview" style="background-color: #34c759;">
-        <text class="feature-icon">📖</text>
-        <text class="feature-name">开始复习</text>
-      </view>
-      <view class="feature-card" bindtap="navigateToWordList" style="background-color: #ff9500;">
-        <text class="feature-icon">📋</text>
-        <text class="feature-name">生词列表</text>
-      </view>
-      <view class="feature-card" bindtap="navigateToStats" style="background-color: #af52de;">
-        <text class="feature-icon">📊</text>
-        <text class="feature-name">学习统计</text>
-      </view>
-      <view class="feature-card" bindtap="navigateToImportExport" style="background-color: #5856d6;">
-        <text class="feature-icon">🔄</text>
-        <text class="feature-name">导入导出</text>
-      </view>
-      <view class="feature-card" bindtap="showSettings" style="background-color: #8e8e93;">
-        <text class="feature-icon">⚙️</text>
-        <text class="feature-name">设置</text>
-      </view>
-    </view>
-  </view>
-  
-  <!-- 今日复习提醒 (苹果风格通知卡片) -->
-  <view class="reminder-card" wx:if="{{isLoggedIn && todayReviewCount > 0}}">
-    <view class="reminder-header">
-      <text class="reminder-icon">⏰</text>
-      <view class="reminder-info">
-        <text class="reminder-title">复习提醒</text>
-        <text class="reminder-time">今天 · 建议完成</text>
-      </view>
-      <text class="reminder-count">{{todayReviewCount}}个</text>
-    </view>
-    <text class="reminder-message">根据记忆曲线，今天有{{todayReviewCount}}个生词需要复习</text>
-    <button class="reminder-button" bindtap="navigateToReview">
-      <text class="button-text">开始复习</text>
-    </button>
-  </view>
-  
-  <!-- 最近添加的生词 -->
-  <view class="recent-words-section" wx:if="{{isLoggedIn && recentWords.length > 0}}">
-    <view class="section-header">
-      <text class="section-title">最近添加</text>
-      <text class="see-all" bindtap="navigateToWordList">查看全部</text>
-    </view>
-    <scroll-view class="words-scroll" scroll-x="true">
-      <view class="words-list">
-        <view class="word-card" wx:for="{{recentWords}}" wx:key="id" bindtap="viewWordDetail" data-id="{{item.id}}">
-          <text class="word-text">{{item.word}}</text>
-          <text class="word-meaning">{{item.meaning}}</text>
-          <view class="word-status" style="background-color: {{getStatusColor(item.status)}};">
-            <text class="status-text">{{getStatusText(item.status)}}</text>
-          </view>
+
+  <!-- 用户欢迎区域 -->
+  <view class="welcome-section" wx:if="{{userInfo}}">
+    <view class="welcome-card card">
+      <view class="user-info">
+        <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+        <view class="user-details">
+          <text class="greeting">你好，{{userInfo.nickName}}！</text>
+          <text class="subtitle">今天也要坚持学习哦 💪</text>
         </view>
+      </view>
+      <view class="stats-row">
+        <view class="stat-item">
+          <text class="stat-value">{{stats.totalWords || 0}}</text>
+          <text class="stat-label">总单词</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.masteredWords || 0}}</text>
+          <text class="stat-label">已掌握</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.streakDays || 0}}</text>
+          <text class="stat-label">连续学习</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快速操作卡片 -->
+  <view class="quick-actions-section">
+    <view class="section-header">
+      <text class="section-title">🚀 快速开始</text>
+      <text class="section-subtitle">选择你想开始的学习方式</text>
+    </view>
+    
+    <view class="actions-grid">
+      <!-- 添加单词 -->
+      <view class="action-card card-interactive" bindtap="goToWordAdd">
+        <view class="action-icon" style="background: rgba(14, 165, 233, 0.1);">
+          <text class="icon">➕</text>
+        </view>
+        <view class="action-content">
+          <text class="action-title">添加单词</text>
+          <text class="action-desc">添加新单词开始学习</text>
+        </view>
+        <view class="action-arrow">→</view>
+      </view>
+
+      <!-- 智能翻译 -->
+      <view class="action-card card-interactive" bindtap="goToTranslate">
+        <view class="action-icon" style="background: rgba(16, 185, 129, 0.1);">
+          <text class="icon">🔤</text>
+        </view>
+        <view class="action-content">
+          <text class="action-title">智能翻译</text>
+          <text class="action-desc">中英互译，学习更轻松</text>
+        </view>
+        <view class="action-arrow">→</view>
+      </view>
+
+      <!-- 开始复习 -->
+      <view class="action-card card-interactive" bindtap="goToReview">
+        <view class="action-icon" style="background: rgba(245, 158, 11, 0.1);">
+          <text class="icon">🔄</text>
+        </view>
+        <view class="action-content">
+          <text class="action-title">开始复习</text>
+          <text class="action-desc">{{reviewCount}} 个单词待复习</text>
+        </view>
+        <view class="action-arrow">→</view>
+      </view>
+
+      <!-- 单词列表 -->
+      <view class="action-card card-interactive" bindtap="goToWordList">
+        <view class="action-icon" style="background: rgba(139, 92, 246, 0.1);">
+          <text class="icon">📋</text>
+        </view>
+        <view class="action-content">
+          <text class="action-title">单词列表</text>
+          <text class="action-desc">查看所有学习记录</text>
+        </view>
+        <view class="action-arrow">→</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日学习目标 -->
+  <view class="goal-section" wx:if="{{dailyGoal}}">
+    <view class="section-header">
+      <text class="section-title">🎯 今日目标</text>
+      <text class="section-subtitle">完成今日学习任务</text>
+    </view>
+    
+    <view class="goal-card card">
+      <view class="goal-header">
+        <text class="goal-title">学习 {{dailyGoal.target}} 个新单词</text>
+        <view class="goal-progress">
+          <text class="progress-text">{{dailyGoal.completed}}/{{dailyGoal.target}}</text>
+          <text class="progress-percent">{{Math.round(dailyGoal.completed/dailyGoal.target*100)}}%</text>
+        </view>
+      </view>
+      
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{(dailyGoal.completed/dailyGoal.target*100) > 100 ? 100 : (dailyGoal.completed/dailyGoal.target*100)}}%;"></view>
+      </view>
+      
+      <view class="goal-actions">
+        <button class="btn btn-primary btn-sm" bindtap="goToWordAdd" wx:if="{{dailyGoal.completed < dailyGoal.target}}">
+          继续学习
+        </button>
+        <view class="goal-completed" wx:else>
+          <text class="completed-text">✅ 今日目标已完成！</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近学习记录 -->
+  <view class="recent-section" wx:if="{{recentWords && recentWords.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">📝 最近学习</text>
+      <text class="section-subtitle">最近添加的单词</text>
+    </view>
+    
+    <scroll-view class="recent-list" scroll-x>
+      <view class="recent-scroll">
+        <block wx:for="{{recentWords}}" wx:key="id">
+          <view class="recent-word-card card-interactive" bindtap="viewWordDetail" data-id="{{item.id}}">
+            <view class="word-main">
+              <text class="word-text">{{item.english}}</text>
+              <text class="word-translation">{{item.chinese}}</text>
+            </view>
+            <view class="word-meta">
+              <text class="word-time">{{formatTime(item.createdAt)}}</text>
+              <view class="word-tag" wx:if="{{item.difficulty === 'hard'}}">
+                <text class="tag-text">难</text>
+              </view>
+            </view>
+          </view>
+        </block>
       </view>
     </scroll-view>
   </view>
-  
-  <!-- 学习建议 -->
-  <view class="tips-section" wx:if="{{isLoggedIn}}">
-    <text class="section-title">学习建议</text>
-    <view class="tips-list">
-      <view class="tip-item">
-        <text class="tip-icon">💡</text>
-        <text class="tip-text">每天复习效果最佳，建议设置固定学习时间</text>
+
+  <!-- 学习统计 -->
+  <view class="stats-section">
+    <view class="section-header">
+      <text class="section-title">📊 学习统计</text>
+      <text class="section-subtitle">查看你的学习进度</text>
+    </view>
+    
+    <view class="stats-cards">
+      <view class="stat-card card" bindtap="goToStats">
+        <text class="stat-card-icon">📈</text>
+        <text class="stat-card-title">学习曲线</text>
+        <text class="stat-card-desc">查看学习进度图表</text>
       </view>
-      <view class="tip-item">
-        <text class="tip-icon">📈</text>
-        <text class="tip-text">根据掌握情况调整复习频率，提高记忆效率</text>
+      
+      <view class="stat-card card" bindtap="goToTest">
+        <text class="stat-card-icon">🧪</text>
+        <text class="stat-card-title">能力测试</text>
+        <text class="stat-card-desc">测试单词掌握程度</text>
       </view>
-      <view class="tip-item">
-        <text class="tip-icon">🔔</text>
-        <text class="tip-text">开启复习提醒，不错过任何学习机会</text>
-      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航 -->
+  <view class="bottom-nav">
+    <view class="nav-item {{currentPage === 'index' ? 'active' : ''}}" bindtap="switchToIndex">
+      <text class="nav-icon">🏠</text>
+      <text class="nav-text">首页</text>
+    </view>
+    
+    <view class="nav-item {{currentPage === 'translate' ? 'active' : ''}}" bindtap="goToTranslate">
+      <text class="nav-icon">🔤</text>
+      <text class="nav-text">翻译</text>
+    </view>
+    
+    <view class="nav-item add-button" bindtap="goToWordAdd">
+      <text class="add-icon">➕</text>
+    </view>
+    
+    <view class="nav-item {{currentPage === 'review' ? 'active' : ''}}" bindtap="goToReview">
+      <text class="nav-icon">🔄</text>
+      <text class="nav-text">复习</text>
+    </view>
+    
+    <view class="nav-item {{currentPage === 'list' ? 'active' : ''}}" bindtap="goToWordList">
+      <text class="nav-icon">📋</text>
+      <text class="nav-text">列表</text>
+    </view>
+  </view>
+
+  <!-- 登录提示 -->
+  <view class="login-prompt" wx:if="{{!userInfo}}">
+    <view class="login-card card">
+      <text class="login-title">欢迎使用单词本</text>
+      <text class="login-desc">登录后可以同步学习记录，享受完整功能</text>
+      <button class="btn btn-primary btn-lg" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
+        微信登录
+      </button>
     </view>
   </view>
 </view>
