@@ -8,10 +8,11 @@
 - **服务状态**: 已激活
 
 ### 腾讯云翻译API密钥：
-- **SecretId**: `AKIDtlU2QdhZFj16ygHxUwV5Xo3KNt0BEy37`
-- **SecretKey**: `AB82oT0NYlrnYAey62oPo25ziFfbP0OZ`
+- **SecretId**: `[通过环境变量配置]`
+- **SecretKey**: `[通过环境变量配置]`
 - **免费额度**: 100万字符/月
 - **服务状态**: 待配置环境变量
+- **配置方式**: 必须在腾讯云控制台设置环境变量
 
 ### 微信小程序配置：
 - **AppID**: `wx1ccb4d171dd88162`
@@ -42,8 +43,8 @@
 3. 进入"环境配置" → "环境变量"
 4. 添加以下变量：
 
-TENCENT_SECRET_ID = AKIDtlU2QdhZFj16ygHxUwV5Xo3KNt0BEy37
-TENCENT_SECRET_KEY = AB82oT0NYlrnYAey62oPo25ziFfbP0OZ
+TENCENT_SECRET_ID = [你的SecretId]
+TENCENT_SECRET_KEY = [你的SecretKey]
 TENCENT_REGION = ap-shanghai
 
 5. 保存配置
@@ -100,10 +101,11 @@ cd word-memorizer
 {
   "envId": "cloud1-1g9313w0bb791de0",
   "tencentTranslation": {
-    "secretId": "AKIDtlU2QdhZFj16ygHxUwV5Xo3KNt0BEy37",
-    "secretKey": "AB82oT0NYlrnYAey62oPo25ziFfbP0OZ",
+    "secretId": "[通过环境变量配置]",
+    "secretKey": "[通过环境变量配置]",
     "region": "ap-shanghai",
-    "enabled": true
+    "enabled": true,
+    "configNote": "密钥必须通过环境变量配置"
   }
 }
 ```
