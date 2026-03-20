@@ -1,66 +1,21 @@
 {
-  "env": "tengfei-workstation-7czc7ab13ca3",
+  "envId": "tengfei-workspace-7ef9ma8b7670ea",
   "region": "ap-shanghai",
-  "functions": [
-    {
-      "name": "user-login",
-      "timeout": 5,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "user-getInfo",
-      "timeout": 5,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "word-add",
-      "timeout": 10,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "word-list",
-      "timeout": 10,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "word-detail",
-      "timeout": 10,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "word-search",
-      "timeout": 10,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "word-import",
-      "timeout": 30,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "word-export",
-      "timeout": 30,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "review-getToday",
-      "timeout": 10,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    },
-    {
-      "name": "review-submit",
-      "timeout": 10,
-      "envVariables": {},
-      "runtime": "Nodejs16.13"
-    }
-  ]
+  "apiKey": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjlkMWRjMzFlLWI0ZDAtNDQ4Yi1hNzZmLWIwY2M2M2Q4MTQ5OCJ9.eyJhdWQiOiJ0ZW5nZmVpLXdvcmtzcGFjZS03ZWY5bWE4Yjc2NzBlYSIsImV4cCI6MTc4MTc3NTU4OSwiaWF0IjoxNzczOTk5NTg5LCJhdF9oYXNoIjoiZ0ZBRHJiUzRTZUsxRTFTZkZvZEVrdyIsInByb2plY3RfaWQiOiJ0ZW5nZmVpLXdvcmtzcGFjZS03ZWY5bWE4Yjc2NzBlYSIsIm1ldGEiOnsicGxhdGZvcm0iOiJBcGlLZXkifSwiYWRtaW5pc3RyYXRvcl9pZCI6IjIwMzQ5MTc4NDk2OTc1NzA4MTgiLCJ1c2VyX3R5cGUiOiIiLCJjbGllbnRfdHlwZSI6ImNsaWVudF9zZXJ2ZXIiLCJpc19zeXN0ZW1fYWRtaW4iOnRydWV9.hqMT8WiMuHwTf_CGW51K1YyG9iOFbYiy3edpdVtILss929RdUbqHnpeILJiyFcPh5IFeebsixbSDhJp7KYLDd49anrfCpOIICeJoyhuvd2tkfPG6IbdxbgrJr2iyGmRIrRC490nvYhoMwvr1NufPZVSLRFNbRBIb8D2qzp4KzVumobd7kTLiR6JCHpWnhPj_83SQ6rwZjiXNxq_eRP1PkKnRJ8md7pNRQqK7YzgXCyAb7vC2JD_saHRBHV7-4t_jlFBlKnKWW4DYtcpq78ST7g3O4hecbyij7h-7b6s9_0lCfXHif-hC3j0U6Brz9SALRkoXDPDqCVtKU3vkvYxjiw",
+  "appId": "wx1ccb4d171dd88162",
+  "projectName": "单词本学习系统",
+  "createdAt": "2026-03-20T17:48:00+08:00",
+  "description": "单词本学习系统的腾讯云环境配置",
+  "services": {
+    "database": true,
+    "functions": true,
+    "storage": true,
+    "hosting": false
+  },
+  "security": {
+    "adminId": "2034917849697570818",
+    "isSystemAdmin": true,
+    "clientType": "client_server",
+    "platform": "ApiKey"
+  }
 }

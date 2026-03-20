@@ -1,0 +1,83 @@
+<!-- 单词列表页面 -->
+<view class="container">
+  <!-- 顶部标题栏 -->
+  <view class="header">
+    <text class="title">📚 我的生词本</text>
+    <button class="add-btn" bindtap="goToAddWord">➕ 添加</button>
+  </view>
+  
+  <!-- 统计信息 -->
+  <view class="stats-card">
+    <view class="stat-item">
+      <text class="stat-number">{{totalWords}}</text>
+      <text class="stat-label">总单词</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-number">{{dueWords}}</text>
+      <text class="stat-label">待复习</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-number">{{masteredWords}}</text>
+      <text class="stat-label">已掌握</text>
+    </view>
+  </view>
+  
+  <!-- 筛选标签 -->
+  <view class="filter-tabs">
+    <view 
+      class="filter-tab {{currentFilter === 'all' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="all"
+    >
+      全部
+    </view>
+    <view 
+      class="filter-tab {{currentFilter === 'due' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="due"
+    >
+      待复习
+    </view>
+    <view 
+      class="filter-tab {{currentFilter === 'mastered' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="mastered"
+    >
+      已掌握
+    </view>
+  </view>
+  
+  <!-- 单词列表 -->
+  <scroll-view class="word-list" scroll-y>
+    <block wx:if="{{words.length > 0}}">
+      <view 
+        class="word-card" 
+        wx:for="{{words}}" 
+        wx:key="id" 
+        bindtap="viewWordDetail" 
+        data-id="{{item.id}}"
+      >
+        <view class="word-header">
+          <text class="word-text">{{item.word}}</text>
+          <text class="phonetic">{{item.phonetic}}</text>
+        </view>
+        <view class="word-meaning">{{item.meaning}}</view>
+        <view class="word-footer">
+          <text class="review-status {{item.due ? 'due' : 'mastered'}}">
+            {{item.due ? '待复习' : '已掌握'}}
+          </text>
+          <text class="review-count">复习{{item.reviewCount}}次</text>
+        </view>
+      </view>
+    </block>
+    
+    <block wx:else>
+      <view class="empty-state">
+        <text class="empty-icon">📭</text>
+        <text class="empty-text">生词本是空的</text>
+        <text class="empty-hint">去添加你的第一个单词吧！</text>
+        <button class="empty-btn" bindtap="goToAddWord">添加单词</button>
+      </view>
+    </block>
+  </scroll-view>
+</view>

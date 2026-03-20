@@ -111,6 +111,7 @@ exports.main = async (event, context) => {
     
     if (!OPENID) {
       return {
+        success: false,
         code: 401,
         message: '未获取到用户标识',
         data: null
@@ -121,6 +122,7 @@ exports.main = async (event, context) => {
     const result = await handleWechatLogin(OPENID, userInfo || {});
     
     return {
+      success: true,
       code: 0,
       message: '登录成功',
       data: {
@@ -134,6 +136,7 @@ exports.main = async (event, context) => {
     console.error('❌ 登录云函数执行失败:', error);
     
     return {
+      success: false,
       code: 500,
       message: '登录失败: ' + error.message,
       data: null
