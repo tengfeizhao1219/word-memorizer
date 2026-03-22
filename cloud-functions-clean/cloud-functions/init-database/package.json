@@ -1,0 +1,9 @@
+{
+  "name": "word-memorizer-init-database",
+  "version": "1.0.0",
+  "description": "init-database 云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^2.6.3"
+  }
+}
