@@ -1,305 +1,177 @@
-// 腾讯云翻译云函数
+/**
+ * 翻译云函数
+ * 使用腾讯云翻译服务
+ */
+
 const cloud = require('wx-server-sdk');
+
+// 初始化云开发
 cloud.init({
   env: 'cloud1-1g9313w0bb791de0',
   traceUser: true
 });
 
-// 腾讯云翻译SDK
-const TencentCloud = require("tencentcloud-sdk-nodejs");
-const TmtClient = TencentCloud.tmt.v20180321.Client;
+// 腾讯云翻译服务配置
+const tencentcloud = require("tencentcloud-sdk-nodejs");
 
+// 注意：这里使用环境变量，不在代码中硬编码密钥
+const TmtClient = tencentcloud.tmt.v20180321.Client;
 
-// 腾讯云翻译配置（直接使用密钥，跳过环境变量）
-const clientConfig = {
-  credential: {
-    secretId: 'process.env.TENCENT_SECRET_ID',
-    secretKey: 'process.env.TENCENT_SECRET_KEY'
-  },
-  region: 'ap-shanghai',
-  profile: {
-    httpProfile: {
-      endpoint: 'tmt.tencentcloudapi.com'
-    }
+/**
+ * 获取腾讯云翻译客户端
+ */
+function getTranslationClient() {
+  // 从环境变量获取密钥
+  const secretId = process.env.TENCENT_SECRET_ID;
+  const secretKey = process.env.TENCENT_SECRET_KEY;
+  const region = process.env.TENCENT_REGION || 'ap-shanghai';
+  
+  if (!secretId || !secretKey) {
+    throw new Error('缺少腾讯云密钥配置，请检查环境变量 TENCENT_SECRET_ID 和 TENCENT_SECRET_KEY');
   }
-};
-
-const tmtClient = new TmtClient(clientConfig);
-console.log('腾讯云翻译服务已初始化（直接密钥模式）');
-
-
-// 本地词典（降级方案）
-const localDictionary = {
-  // 英文 -> 中文
-  'en': {
-    'hello': '你好',
-    'world': '世界',
-    'apple': '苹果',
-    'book': '书',
-    'computer': '电脑',
-    'phone': '电话',
-    'water': '水',
-    'food': '食物',
-    'time': '时间',
-    'people': '人们',
-    'student': '学生',
-    'teacher': '老师',
-    'school': '学校',
-    'home': '家',
-    'work': '工作',
-    'love': '爱',
-    'friend': '朋友',
-    'family': '家庭',
-    'city': '城市',
-    'country': '国家'
-  },
-  // 中文 -> 英文
-  'zh': {
-    '你好': 'hello',
-    '世界': 'world',
-    '苹果': 'apple',
-    '书': 'book',
-    '电脑': 'computer',
-    '电话': 'phone',
-    '水': 'water',
-    '食物': 'food',
-    '时间': 'time',
-    '人们': 'people',
-    '学生': 'student',
-    '老师': 'teacher',
-    '学校': 'school',
-    '家': 'home',
-    '工作': 'work',
-    '爱': 'love',
-    '朋友': 'friend',
-    '家庭': 'family',
-    '城市': 'city',
-    '国家': 'country'
-  }
-};
-
-// 腾讯云翻译配置
-const getTranslationClient = () => {
-  try {
-    // 从环境变量获取密钥（优先）
-    let secretId = ;
-    let secretKey = ;
-    
-    // 必须通过环境变量配置密钥
-    if (!secretId || !secretKey) {
-      console.error('腾讯云翻译API密钥未配置，请设置环境变量 TENCENT_SECRET_ID 和 TENCENT_SECRET_KEY');
-      console.error('将使用本地词典降级方案');
-      return null;
-    }
-    
-    return new TmtClient({
-      credential: {
-        secretId: secretId,
-        secretKey: secretKey,
+  
+  const clientConfig = {
+    credential: {
+      secretId: secretId,
+      secretKey: secretKey,
+    },
+    region: region,
+    profile: {
+      httpProfile: {
+        endpoint: "tmt.tencentcloudapi.com",
       },
-      region: "ap-shanghai",
-      profile: {
-        httpProfile: {
-          endpoint: "tmt.tencentcloudapi.com",
-        },
-      },
-    });
-  } catch (error) {
-    console.error('创建翻译客户端失败:', error);
-    return null;
-  }
-};
-
-// 本地降级翻译
-function fallbackTranslate(text, source, target) {
-  console.log(`使用本地词典降级翻译: ${text} (${source}→${target})`);
-  
-  // 英文 -> 中文
-  if (source === 'en' && target === 'zh') {
-    const translated = localDictionary.en[text.toLowerCase()];
-    if (translated) {
-      return {
-        original: text,
-        translated: translated,
-        source: source,
-        target: target,
-        isFallback: true,
-        confidence: 'high'
-      };
-    }
-  }
-  
-  // 中文 -> 英文
-  if (source === 'zh' && target === 'en') {
-    const translated = localDictionary.zh[text];
-    if (translated) {
-      return {
-        original: text,
-        translated: translated,
-        source: source,
-        target: target,
-        isFallback: true,
-        confidence: 'high'
-      };
-    }
-  }
-  
-  // 简单规则降级（用于开发测试）
-  if (source === 'en' && target === 'zh') {
-    return {
-      original: text,
-      translated: `[本地] ${text} 的翻译`,
-      source: source,
-      target: target,
-      isFallback: true,
-      confidence: 'low'
-    };
-  }
-  
-  if (source === 'zh' && target === 'en') {
-    return {
-      original: text,
-      translated: `[Local] Translation of ${text}`,
-      source: source,
-      target: target,
-      isFallback: true,
-      confidence: 'low'
-    };
-  }
-  
-  // 默认降级
-  return {
-    original: text,
-    translated: '翻译服务暂不可用',
-    source: source,
-    target: target,
-    isFallback: true,
-    confidence: 'none'
+    },
   };
+  
+  return new TmtClient(clientConfig);
 }
 
-// 主函数
-exports.main = async (event, context) => {
-  console.log('翻译云函数被调用:', {
-    text: event.text,
-    source: event.source,
-    target: event.target,
-    timestamp: new Date().toISOString()
-  });
-  
-  const { text, source = 'zh', target = 'en' } = event;
-  
-  // 参数验证
-  if (!text || typeof text !== 'string') {
-    return {
-      success: false,
-      error: '缺少文本参数或参数类型错误',
-      code: 'INVALID_PARAMETER'
-    };
-  }
-  
-  if (text.length > 1000) {
-    return {
-      success: false,
-      error: '文本过长，最大支持1000字符',
-      code: 'TEXT_TOO_LONG'
-    };
-  }
-  
-  // 尝试使用腾讯云翻译
+/**
+ * 调用腾讯云翻译API
+ */
+async function translateText(text, sourceLang = 'en', targetLang = 'zh') {
   try {
     const client = getTranslationClient();
     
-    if (!client) {
-      console.warn('翻译客户端创建失败，使用降级方案');
-      const fallbackResult = fallbackTranslate(text, source, target);
-      return {
-        success: true,
-        data: fallbackResult,
-        message: '使用本地词典翻译'
-      };
-    }
-    
     const params = {
       SourceText: text,
-      Source: source,
-      Target: target,
-      ProjectId: 0,
+      Source: sourceLang,
+      Target: targetLang,
+      ProjectId: 0
     };
     
-    console.log('调用腾讯云翻译API:', params);
-    
-    const result = await client.TextTranslate(params);
-    
-    console.log('腾讯云翻译API响应:', {
-      requestId: result.RequestId,
-      targetText: result.TargetText,
-      source: result.Source,
-      target: result.Target
-    });
+    const response = await client.TextTranslate(params);
     
     return {
       success: true,
-      data: {
-        original: text,
-        translated: result.TargetText,
-        source: source,
-        target: target,
-        requestId: result.RequestId,
-        isFallback: false,
-        confidence: 'high',
-        provider: 'tencent'
-      },
-      message: '翻译成功'
+      sourceText: text,
+      targetText: response.TargetText,
+      sourceLang: sourceLang,
+      targetLang: targetLang,
+      requestId: response.RequestId
     };
-    
   } catch (error) {
-    console.error('腾讯云翻译失败:', {
-      error: error.message,
-      code: error.code,
-      text: text,
-      source: source,
-      target: target
-    });
+    console.error('❌ 腾讯云翻译失败:', error);
     
-    // 降级方案
-    const fallbackResult = fallbackTranslate(text, source, target);
-    
-    return {
-      success: true, // 仍然返回成功，因为有降级方案
-      data: fallbackResult,
-      error: error.message,
-      code: error.code,
-      message: '翻译服务暂时不可用，已使用备用方案'
+    // 如果腾讯云翻译失败，返回模拟翻译结果
+    const mockTranslations = {
+      'hello': '你好',
+      'world': '世界',
+      'apple': '苹果',
+      'book': '书',
+      'computer': '电脑',
+      'phone': '手机',
+      'water': '水',
+      'food': '食物',
+      'time': '时间',
+      'day': '天'
     };
-  }
-};
-
-// 测试函数（开发阶段使用）
-exports.test = async () => {
-  const testCases = [
-    { text: 'hello', source: 'en', target: 'zh' },
-    { text: '世界', source: 'zh', target: 'en' },
-    { text: 'apple', source: 'en', target: 'zh' },
-    { text: 'book', source: 'en', target: 'zh' }
-  ];
-  
-  const results = [];
-  
-  for (const testCase of testCases) {
-    try {
-      const result = await exports.main(testCase);
-      results.push({
-        test: testCase,
-        result: result
-      });
-    } catch (error) {
-      results.push({
-        test: testCase,
-        error: error.message
-      });
+    
+    const mockResult = mockTranslations[text.toLowerCase()];
+    
+    if (mockResult) {
+      return {
+        success: true,
+        sourceText: text,
+        targetText: mockResult,
+        sourceLang: sourceLang,
+        targetLang: targetLang,
+        isMock: true,
+        message: '使用模拟翻译（腾讯云翻译服务可能未开通）'
+      };
+    } else {
+      return {
+        success: false,
+        sourceText: text,
+        error: error.message,
+        code: error.code || 'TRANSLATION_ERROR',
+        message: '翻译失败，请检查腾讯云翻译服务配置'
+      };
     }
   }
+}
+
+/**
+ * 云函数入口
+ */
+exports.main = async (event, context) => {
+  const { text, source = 'en', target = 'zh' } = event;
   
-  return results;
+  try {
+    console.log('🔤 翻译请求:', { text, source, target });
+    
+    if (!text) {
+      return {
+        success: false,
+        code: 400,
+        message: '缺少翻译文本',
+        data: null
+      };
+    }
+    
+    // 执行翻译
+    const result = await translateText(text, source, target);
+    
+    if (result.success) {
+      console.log('✅ 翻译成功:', result.targetText);
+      
+      return {
+        success: true,
+        code: 0,
+        message: '翻译成功',
+        data: {
+          sourceText: result.sourceText,
+          targetText: result.targetText,
+          sourceLang: result.sourceLang,
+          targetLang: result.targetLang,
+          isMock: result.isMock || false,
+          timestamp: new Date().toISOString()
+        }
+      };
+    } else {
+      console.log('❌ 翻译失败:', result.error);
+      
+      return {
+        success: false,
+        code: 500,
+        message: result.message || '翻译失败',
+        data: {
+          error: result.error,
+          code: result.code
+        }
+      };
+    }
+  } catch (error) {
+    console.error('❌ 翻译云函数执行失败:', error);
+    
+    return {
+      success: false,
+      code: 500,
+      message: '翻译服务异常: ' + error.message,
+      data: {
+        error: error.toString(),
+        timestamp: new Date().toISOString()
+      }
+    };
+  }
 };
