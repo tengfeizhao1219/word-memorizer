@@ -13,8 +13,8 @@ const TmtClient = TencentCloud.tmt.v20180321.Client;
 // 腾讯云翻译配置（直接使用密钥，跳过环境变量）
 const clientConfig = {
   credential: {
-    secretId: 'AKIDQjwAGArKbfVK4iOtDLFvOdeR0LSM1Tgh',
-    secretKey: 'sjS2SgjdNwSktulPq5LSCnDQO9j7HDvP'
+    secretId: 'process.env.TENCENT_SECRET_ID',
+    secretKey: 'process.env.TENCENT_SECRET_KEY'
   },
   region: 'ap-shanghai',
   profile: {

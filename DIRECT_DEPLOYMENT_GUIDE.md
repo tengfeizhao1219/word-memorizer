@@ -4,8 +4,8 @@
 
 ### 已确认的信息：
 - **环境ID**: `cloud1-1g9313w0bb791de0`
-- **SecretId**: `AKIDQjwAGArKbfVK4iOtDLFvOdeR0LSM1Tgh`
-- **SecretKey**: `sjS2SgjdNwSktulPq5LSCnDQO9j7HDvP`
+- **SecretId**: `process.env.TENCENT_SECRET_ID`
+- **SecretKey**: `process.env.TENCENT_SECRET_KEY`
 - **地域**: `ap-shanghai`
 - **微信AppID**: `wx1ccb4d171dd88162`
 
@@ -168,8 +168,8 @@ wx.cloud.callFunction({
 // 腾讯云翻译配置（直接使用密钥）
 const clientConfig = {
   credential: {
-    secretId: 'AKIDQjwAGArKbfVK4iOtDLFvOdeR0LSM1Tgh',
-    secretKey: 'sjS2SgjdNwSktulPq5LSCnDQO9j7HDvP'
+    secretId: 'process.env.TENCENT_SECRET_ID',
+    secretKey: 'process.env.TENCENT_SECRET_KEY'
   },
   region: 'ap-shanghai',
   profile: {
@@ -223,7 +223,7 @@ ls -la */
 grep -n "cloud1-1g9313w0bb791de0" deploy-direct/*/index.js
 
 # 检查密钥配置
-grep -n "AKIDQjwAGArKbfVK4iOtDLFvOdeR0LSM1Tgh" deploy-direct/translate/index.js
+grep -n "process.env.TENCENT_SECRET_ID" deploy-direct/translate/index.js
 ```
 
 ## 🚀 快速开始脚本

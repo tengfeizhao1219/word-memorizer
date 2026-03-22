@@ -23,8 +23,8 @@ const checks = [
     file: 'deploy-direct/translate/index.js',
     patterns: [
       /cloud1-1g9313w0bb791de0/,
-      /AKIDQjwAGArKbfVK4iOtDLFvOdeR0LSM1Tgh/,
-      /sjS2SgjdNwSktulPq5LSCnDQO9j7HDvP/
+      /process.env.TENCENT_SECRET_ID/,
+      /process.env.TENCENT_SECRET_KEY/
     ],
     required: true
   },

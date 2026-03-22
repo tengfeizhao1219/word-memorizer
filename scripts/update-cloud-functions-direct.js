@@ -13,8 +13,8 @@ console.log('==============================\n');
 // 配置信息
 const config = {
   envId: 'cloud1-1g9313w0bb791de0',
-  secretId: 'AKIDQjwAGArKbfVK4iOtDLFvOdeR0LSM1Tgh',
-  secretKey: 'sjS2SgjdNwSktulPq5LSCnDQO9j7HDvP',
+  secretId: 'process.env.TENCENT_SECRET_ID',
+  secretKey: 'process.env.TENCENT_SECRET_KEY',
   region: 'ap-shanghai',
   appId: 'wx1ccb4d171dd88162'
 };
