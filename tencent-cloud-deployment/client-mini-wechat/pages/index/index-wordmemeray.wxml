@@ -1,0 +1,244 @@
+<!-- 首页 - 基于WordMemeray设计 -->
+<view class="wordmemeray-container">
+  <!-- 顶部标题区域 -->
+  <view class="header-section">
+    <view class="header-content">
+      <text class="app-title">📖 单词本</text>
+      <text class="app-subtitle">轻松记忆，高效学习</text>
+    </view>
+  </view>
+  
+  <!-- 主要内容区域 -->
+  <view class="main-section">
+    <!-- 查询卡片 -->
+    <view class="query-card">
+      <view class="card-header">
+        <text class="card-title">🔍 查单词</text>
+        <text class="card-desc">输入英文单词查询中文释义</text>
+      </view>
+      
+      <view class="query-input-section">
+        <input 
+          class="query-input" 
+          placeholder="输入英文单词..." 
+          value="{{queryWord}}"
+          bindinput="onQueryInput"
+          confirm-type="search"
+          bindconfirm="onSearch"
+        />
+        
+        <view class="query-actions">
+          <button 
+            class="action-btn clear-btn" 
+            bindtap="clearQuery"
+            wx:if="{{queryWord}}"
+            hover-class="btn-hover"
+          >
+            清空
+          </button>
+          <button 
+            class="action-btn search-btn" 
+            bindtap="onSearch"
+            disabled="{{!queryWord}}"
+            hover-class="btn-hover"
+          >
+            查询
+          </button>
+        </view>
+      </view>
+      
+      <!-- 查询结果 -->
+      <view class="query-result" wx:if="{{queryResult}}">
+        <view class="result-header">
+          <text class="result-title">查询结果</text>
+          <button 
+            class="add-word-btn" 
+            bindtap="addToWordList"
+            hover-class="btn-hover"
+          >
+            ➕ 加入生词本
+          </button>
+        </view>
+        
+        <view class="result-content">
+          <view class="word-display">
+            <text class="word-english">{{queryResult.english}}</text>
+            <text class="word-chinese">{{queryResult.chinese}}</text>
+          </view>
+          
+          <view class="word-details" wx:if="{{queryResult.details}}">
+            <text class="details-label">详细释义：</text>
+            <text class="details-content">{{queryResult.details}}</text>
+          </view>
+          
+          <view class="word-example" wx:if="{{queryResult.example}}">
+            <text class="example-label">例句：</text>
+            <text class="example-content">{{queryResult.example}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 快速功能卡片 -->
+    <view class="quick-actions-card">
+      <view class="card-header">
+        <text class="card-title">🚀 快速开始</text>
+        <text class="card-desc">选择学习方式</text>
+      </view>
+      
+      <view class="actions-grid">
+        <!-- 查单词 -->
+        <view class="action-item" bindtap="goToTranslate" hover-class="item-hover">
+          <view class="action-icon translate-icon">
+            <text class="icon">🔍</text>
+          </view>
+          <text class="action-text">查单词</text>
+          <text class="action-desc">中英互译</text>
+        </view>
+        
+        <!-- 生词本 -->
+        <view class="action-item" bindtap="goToWordList" hover-class="item-hover">
+          <view class="action-icon wordbook-icon">
+            <text class="icon">📚</text>
+          </view>
+          <text class="action-text">生词本</text>
+          <text class="action-desc">管理单词</text>
+        </view>
+        
+        <!-- 复习 -->
+        <view class="action-item" bindtap="goToReview" hover-class="item-hover">
+          <view class="action-icon review-icon">
+            <text class="icon">🎯</text>
+          </view>
+          <text class="action-text">复习</text>
+          <text class="action-desc">智能记忆</text>
+        </view>
+        
+        <!-- 提醒 -->
+        <view class="action-item" bindtap="goToReminder" hover-class="item-hover">
+          <view class="action-icon reminder-icon">
+            <text class="icon">⏰</text>
+          </view>
+          <text class="action-text">提醒</text>
+          <text class="action-desc">定时学习</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 学习统计卡片 -->
+    <view class="stats-card" wx:if="{{userStats}}">
+      <view class="card-header">
+        <text class="card-title">📊 学习统计</text>
+        <text class="card-desc">你的学习进度</text>
+      </view>
+      
+      <view class="stats-content">
+        <view class="stat-item">
+          <text class="stat-value">{{userStats.totalWords || 0}}</text>
+          <text class="stat-label">总单词</text>
+        </view>
+        
+        <view class="stat-item">
+          <text class="stat-value">{{userStats.masteredWords || 0}}</text>
+          <text class="stat-label">已掌握</text>
+        </view>
+        
+        <view class="stat-item">
+          <text class="stat-value">{{userStats.streakDays || 0}}</text>
+          <text class="stat-label">连续学习</text>
+        </view>
+        
+        <view class="stat-item">
+          <text class="stat-value">{{userStats.todayWords || 0}}</text>
+          <text class="stat-label">今日学习</text>
+        </view>
+      </view>
+      
+      <view class="progress-section" wx:if="{{userStats.learningProgress}}">
+        <view class="progress-header">
+          <text class="progress-title">学习进度</text>
+          <text class="progress-percent">{{userStats.learningProgress}}%</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{userStats.learningProgress}}%;"></view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 最近学习卡片 -->
+    <view class="recent-card" wx:if="{{recentWords && recentWords.length > 0}}">
+      <view class="card-header">
+        <text class="card-title">📝 最近学习</text>
+        <text class="card-desc">最近添加的单词</text>
+      </view>
+      
+      <scroll-view class="recent-list" scroll-x>
+        <view class="recent-scroll">
+          <block wx:for="{{recentWords}}" wx:key="id">
+            <view class="recent-item" bindtap="viewWordDetail" data-id="{{item.id}}" hover-class="item-hover">
+              <view class="word-content">
+                <text class="word-text">{{item.english}}</text>
+                <text class="word-translation">{{item.chinese}}</text>
+              </view>
+              <view class="word-time">{{formatTime(item.createdAt)}}</view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+    
+    <!-- 空状态提示 -->
+    <view class="empty-state" wx:if="{{!recentWords || recentWords.length === 0}}">
+      <view class="empty-content">
+        <text class="empty-icon">📚</text>
+        <text class="empty-title">开始你的单词学习之旅</text>
+        <text class="empty-desc">添加第一个单词，开始积累你的词汇库</text>
+        <button class="empty-action-btn" bindtap="goToWordAdd" hover-class="btn-hover">
+          ➕ 添加单词
+        </button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部导航栏 - 基于WordMemeray设计 -->
+  <view class="bottom-nav">
+    <view class="nav-item {{currentTab === 'translate' ? 'active' : ''}}" bindtap="switchTab" data-tab="translate">
+      <view class="nav-icon">
+        <text class="icon">🔍</text>
+      </view>
+      <text class="nav-text">查单词</text>
+    </view>
+    
+    <view class="nav-item {{currentTab === 'wordbook' ? 'active' : ''}}" bindtap="switchTab" data-tab="wordbook">
+      <view class="nav-icon">
+        <text class="icon">📚</text>
+      </view>
+      <text class="nav-text">生词本</text>
+    </view>
+    
+    <view class="nav-item {{currentTab === 'review' ? 'active' : ''}}" bindtap="switchTab" data-tab="review">
+      <view class="nav-icon">
+        <text class="icon">🎯</text>
+      </view>
+      <text class="nav-text">复习</text>
+    </view>
+    
+    <view class="nav-item {{currentTab === 'reminder' ? 'active' : ''}}" bindtap="switchTab" data-tab="reminder">
+      <view class="nav-icon">
+        <text class="icon">⏰</text>
+      </view>
+      <text class="nav-text">提醒</text>
+    </view>
+  </view>
+  
+  <!-- 登录提示 -->
+  <view class="login-prompt" wx:if="{{!userInfo}}">
+    <view class="login-card">
+      <text class="login-title">欢迎使用单词本</text>
+      <text class="login-desc">登录后可以同步学习记录，享受完整功能</text>
+      <button class="login-btn" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" hover-class="btn-hover">
+        微信登录
+      </button>
+    </view>
+  </view>
+</view>

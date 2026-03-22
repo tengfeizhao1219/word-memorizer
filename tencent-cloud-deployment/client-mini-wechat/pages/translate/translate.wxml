@@ -1,0 +1,170 @@
+<!-- 翻译功能页面 -->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <text class="title">🔤 智能翻译</text>
+    <text class="subtitle">中英互译，学习更轻松</text>
+  </view>
+  
+  <!-- 语言选择 -->
+  <view class="language-selector">
+    <view class="language-card" bindtap="switchLanguages">
+      <view class="language-from">
+        <text class="language-label">从</text>
+        <picker 
+          class="language-picker" 
+          range="{{languages}}" 
+          value="{{fromIndex}}"
+          bindchange="onFromChange"
+        >
+          <view class="picker-view">
+            <text class="language-name">{{languages[fromIndex]}}</text>
+            <text class="language-code">{{languageCodes[fromIndex]}}</text>
+          </view>
+        </picker>
+      </view>
+      
+      <view class="swap-icon">
+        <text class="swap-text">⇄</text>
+      </view>
+      
+      <view class="language-to">
+        <text class="language-label">到</text>
+        <picker 
+          class="language-picker" 
+          range="{{languages}}" 
+          value="{{toIndex}}"
+          bindchange="onToChange"
+        >
+          <view class="picker-view">
+            <text class="language-name">{{languages[toIndex]}}</text>
+            <text class="language-code">{{languageCodes[toIndex]}}</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 输入区域 -->
+  <view class="input-section">
+    <view class="input-card">
+      <textarea 
+        class="input-textarea" 
+        placeholder="{{fromIndex === 0 ? '请输入中文...' : 'Enter English...'}}"
+        value="{{inputText}}"
+        bindinput="onInput"
+        auto-height
+        maxlength="500"
+        show-count
+      />
+      
+      <view class="input-actions">
+        <button 
+          class="action-btn clear-btn" 
+          bindtap="clearInput"
+          wx:if="{{inputText}}"
+        >
+          🗑️ 清空
+        </button>
+        <button 
+          class="action-btn translate-btn" 
+          bindtap="doTranslate"
+          disabled="{{!inputText || translating}}"
+        >
+          {{translating ? '翻译中...' : '🚀 翻译'}}
+        </button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 翻译结果 -->
+  <view class="result-section" wx:if="{{translationResult}}">
+    <view class="result-card">
+      <view class="result-header">
+        <text class="result-title">📝 翻译结果</text>
+        <text class="result-provider" wx:if="{{translationResult.provider}}">
+          {{translationResult.provider === 'tencent' ? '腾讯云翻译' : '本地词典'}}
+        </text>
+      </view>
+      
+      <view class="original-text">
+        <text class="original-label">原文:</text>
+        <text class="original-content">{{translationResult.original}}</text>
+      </view>
+      
+      <view class="translated-text">
+        <text class="translated-label">翻译:</text>
+        <text class="translated-content">{{translationResult.translated}}</text>
+      </view>
+      
+      <view class="result-actions">
+        <button class="result-btn speak-btn" bindtap="speakText" data-text="{{translationResult.original}}">
+          🔊 朗读原文
+        </button>
+        <button class="result-btn speak-btn" bindtap="speakText" data-text="{{translationResult.translated}}">
+          🔊 朗读翻译
+        </button>
+        <button 
+          class="result-btn add-btn" 
+          bindtap="addToWordList"
+          wx:if="{{canAddToWordList}}"
+        >
+          📚 加入生词本
+        </button>
+        <button class="result-btn copy-btn" bindtap="copyTranslation">
+          📋 复制翻译
+        </button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 翻译历史 -->
+  <view class="history-section" wx:if="{{translationHistory.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">📜 翻译历史</text>
+      <button class="clear-history-btn" bindtap="clearHistory" size="mini">
+        清空
+      </button>
+    </view>
+    
+    <scroll-view class="history-list" scroll-y>
+      <block wx:for="{{translationHistory}}" wx:key="timestamp">
+        <view class="history-item" bindtap="useHistory" data-index="{{index}}">
+          <view class="history-content">
+            <text class="history-original">{{item.original}}</text>
+            <text class="history-translated">{{item.translated}}</text>
+          </view>
+          <view class="history-meta">
+            <text class="history-lang">{{item.source}} → {{item.target}}</text>
+            <text class="history-time">{{formatTime(item.timestamp)}}</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+  
+  <!-- 使用提示 -->
+  <view class="tips-section">
+    <view class="tip-card">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">提示: 翻译结果可直接加入生词本学习</text>
+    </view>
+    <view class="tip-card">
+      <text class="tip-icon">🎯</text>
+      <text class="tip-text">免费额度: 每月100万字符，足够个人使用</text>
+    </view>
+  </view>
+  
+  <!-- 快速操作 -->
+  <view class="quick-actions">
+    <button class="quick-btn" bindtap="goToWordAdd">
+      ➕ 添加单词
+    </button>
+    <button class="quick-btn" bindtap="goToWordList">
+      📚 生词列表
+    </button>
+    <button class="quick-btn" bindtap="goToTest">
+      🧪 系统测试
+    </button>
+  </view>
+</view>

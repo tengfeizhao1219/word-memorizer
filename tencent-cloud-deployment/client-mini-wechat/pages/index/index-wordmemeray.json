@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "单词本",
+  "navigationBarBackgroundColor": "#7c3aed",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#f5f3ff",
+  "backgroundTextStyle": "light",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50
+}

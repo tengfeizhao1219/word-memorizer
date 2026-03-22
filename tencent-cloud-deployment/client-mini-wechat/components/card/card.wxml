@@ -1,0 +1,45 @@
+<!-- 卡片组件 -->
+<view 
+  class="custom-card {{type}} {{shadow}} {{interactive ? 'interactive' : ''}} {{padding}}"
+  style="{{customStyle}}"
+  bindtap="{{interactive ? 'onTap' : ''}}"
+  hover-class="{{interactive ? 'hover' : ''}}"
+  hover-stay-time="100"
+>
+  <!-- 卡片头部 -->
+  <view class="card-header" wx:if="{{title || $slots.header}}">
+    <slot name="header">
+      <view class="header-content">
+        <text class="card-title" wx:if="{{title}}">{{title}}</text>
+        <text class="card-subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+        <view class="header-actions" wx:if="{{$slots.actions}}">
+          <slot name="actions"></slot>
+        </view>
+      </view>
+    </slot>
+  </view>
+  
+  <!-- 卡片内容 -->
+  <view class="card-content">
+    <slot></slot>
+  </view>
+  
+  <!-- 卡片底部 -->
+  <view class="card-footer" wx:if="{{$slots.footer}}">
+    <slot name="footer"></slot>
+  </view>
+  
+  <!-- 加载状态 -->
+  <view class="card-loading" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text" wx:if="{{loadingText}}">{{loadingText}}</text>
+  </view>
+  
+  <!-- 空状态 -->
+  <view class="card-empty" wx:if="{{empty && !loading}}">
+    <text class="empty-icon">{{emptyIcon || '📭'}}</text>
+    <text class="empty-title" wx:if="{{emptyTitle}}">{{emptyTitle}}</text>
+    <text class="empty-desc" wx:if="{{emptyDesc}}">{{emptyDesc}}</text>
+    <slot name="empty" wx:if="{{$slots.empty}}"></slot>
+  </view>
+</view>

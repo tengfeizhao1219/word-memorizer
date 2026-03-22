@@ -1,0 +1,268 @@
+/* 卡片组件样式 */
+
+.custom-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 卡片类型 */
+.default {
+  border: 1rpx solid var(--border-light);
+}
+
+.elevated {
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
+.outlined {
+  border: 2rpx solid var(--border-light);
+  background: transparent;
+}
+
+.filled {
+  border: none;
+  background: var(--bg-secondary);
+}
+
+/* 阴影级别 */
+.shadow-none {
+  box-shadow: none;
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+/* 内边距 */
+.padding-none {
+  padding: 0;
+}
+
+.padding-sm {
+  padding: var(--space-3);
+}
+
+.padding-md {
+  padding: var(--space-4);
+}
+
+.padding-lg {
+  padding: var(--space-5);
+}
+
+.padding-xl {
+  padding: var(--space-6);
+}
+
+/* 交互状态 */
+.interactive {
+  cursor: pointer;
+}
+
+.interactive:hover, .interactive.hover {
+  transform: translateY(-4rpx);
+  box-shadow: var(--shadow-lg);
+}
+
+.interactive:active {
+  transform: translateY(-2rpx);
+  box-shadow: var(--shadow-md);
+}
+
+/* 卡片头部 */
+.card-header {
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1rpx solid var(--border-light);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  display: block;
+}
+
+.card-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  display: block;
+  margin-top: var(--space-1);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* 卡片内容 */
+.card-content {
+  padding: var(--space-4);
+}
+
+.padding-none .card-content {
+  padding: 0;
+}
+
+.padding-sm .card-content {
+  padding: var(--space-3);
+}
+
+.padding-md .card-content {
+  padding: var(--space-4);
+}
+
+.padding-lg .card-content {
+  padding: var(--space-5);
+}
+
+.padding-xl .card-content {
+  padding: var(--space-6);
+}
+
+/* 卡片底部 */
+.card-footer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1rpx solid var(--border-light);
+  background: var(--bg-tertiary);
+}
+
+/* 加载状态 */
+.card-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.loading-spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid var(--gray-300);
+  border-top-color: var(--primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--space-3);
+}
+
+.loading-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 空状态 */
+.card-empty {
+  padding: var(--space-10) var(--space-5);
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 64rpx;
+  color: var(--gray-400);
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+.empty-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--gray-700);
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.empty-desc {
+  font-size: var(--text-base);
+  color: var(--gray-600);
+  display: block;
+  line-height: var(--leading-relaxed);
+}
+
+/* 动画效果 */
+.custom-card {
+  animation: fadeInUp 0.5s var(--transition-spring) forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 涟漪效果 */
+.custom-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(14, 165, 233, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+  pointer-events: none;
+}
+
+.interactive:active::after {
+  width: 400rpx;
+  height: 400rpx;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 600rpx) {
+  .padding-lg {
+    padding: var(--space-4);
+  }
+  
+  .padding-xl {
+    padding: var(--space-5);
+  }
+  
+  .card-header {
+    padding: var(--space-3) var(--space-3) var(--space-2);
+  }
+  
+  .card-content {
+    padding: var(--space-3);
+  }
+}

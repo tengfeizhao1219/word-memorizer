@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordMemeray - 单词学习</title>
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-light: #8b5cf6;
+            --background: #f5f3ff;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --radius: 20px;
+            --shadow: 0 10px 25px rgba(124, 58, 237, 0.1);
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font);
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 30px 24px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .content {
+            padding: 32px 24px;
+        }
+        
+        .search-box {
+            margin-bottom: 32px;
+        }
+        
+        .search-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-family: var(--font);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+        
+        .search-button {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius);
+            font-size: 18px;
+            font-weight: 600;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+        
+        .search-button:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
+        }
+        
+        .result-box {
+            background: #faf5ff;
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 24px;
+            border: 2px solid var(--primary);
+            display: none;
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+        
+        .word {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        
+        .translation {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        
+        .example {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.5;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 32px;
+        }
+        
+        .feature {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+        
+        .feature:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .feature-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 24px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 16px;
+            }
+            
+            .header {
+                padding: 24px 20px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 24px 20px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📚</div>
+            <h1 class="title">WordMemeray</h1>
+            <p class="subtitle">智能单词学习系统</p>
+        </div>
+        
+        <div class="content">
+            <div class="search-box">
+                <label class="search-label">🔍 输入英文单词</label>
+                <input type="text" class="search-input" id="wordInput" placeholder="例如：hello, world, apple..." autofocus>
+                <button class="search-button" id="searchBtn">查询翻译</button>
+            </div>
+            
+            <div class="result-box" id="resultBox">
+                <div class="result-title">📖 查询结果</div>
+                <div class="word" id="wordDisplay">hello</div>
+                <div class="translation" id="translationDisplay">你好</div>
+                <div class="example" id="exampleDisplay">Hello, how are you today?</div>
+            </div>
+            
+            <div class="features">
+                <div class="feature" onclick="showFeature('vocabulary')">
+                    <div class="feature-icon">📒</div>
+                    <div class="feature-title">生词本</div>
+                    <div class="feature-desc">管理你的学习单词</div>
+                </div>
+                <div class="feature" onclick="showFeature('review')">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">智能复习</div>
+                    <div class="feature-desc">基于记忆曲线</div>
+                </div>
+                <div class="feature" onclick="showFeature('stats')">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">学习统计</div>
+                    <div class="feature-desc">可视化进度</div>
+                </div>
+                <div class="feature" onclick="showFeature('reminder')">
+                    <div class="feature-icon">⏰</div>
+                    <div class="feature-title">学习提醒</div>
+                    <div class="feature-desc">定时提醒复习</div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number" id="totalWords">156</div>
+                    <div class="stat-label">总单词</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="masteredWords">89</div>
+                    <div class="stat-label">已掌握</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="streakDays">14</div>
+                    <div class="stat-label">连续学习</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>WordMemeray预览页面 | 基于WordMemeray设计风格</p>
+            <p style="margin-top: 8px; font-size: 12px;">
+                部署时间：2026-03-22 | 状态：<span style="color: #10b981;">● 在线</span>
+            </p>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <span id="notificationText">操作成功！</span>
+    </div>
+    
+    <script>
+        // 单词词典
+        const dictionary = {
+            'hello': { translation: '你好', example: 'Hello, how are you today?' },
+            'world': { translation: '世界', example: 'Hello world! Welcome to programming.' },
+            'apple': { translation: '苹果', example: 'I eat an apple every morning.' },
+            'book': { translation: '书', example: 'This is an interesting book about history.' },
+            'computer': { translation: '电脑', example: 'I use a computer for work and study.' },
+            'water': { translation: '水', example: 'Drink enough water every day.' },
+            'time': { translation: '时间', example: 'Time is precious, use it wisely.' },
+            'learn': { translation: '学习', example: 'We learn new things every day.' },
+            'memory': { translation: '记忆', example: 'Memory is important for learning.' },
+            'success': { translation: '成功', example: 'Success comes from hard work.' }
+        };
+        
+        // DOM元素
+        const wordInput = document.getElementById('wordInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultBox = document.getElementById('resultBox');
+        const wordDisplay = document.getElementById('wordDisplay');
+        const translationDisplay = document.getElementById('translationDisplay');
+        const exampleDisplay = document.getElementById('exampleDisplay');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        
+        // 学习统计
+        const totalWordsEl = document.getElementById('totalWords');
+        const masteredWordsEl = document.getElementById('masteredWords');
+        const streakDaysEl = document.getElementById('streakDays');
+        
+        // 初始化统计
+        function updateStats() {
+            totalWordsEl.textContent = Object.keys(dictionary).length;
+            masteredWordsEl.textContent = Math.floor(Object.keys(dictionary).length * 0.6);
+            streakDaysEl.textContent = Math.floor(Math.random() * 30) + 1;
+        }
+        
+        // 显示通知
+        function showNotification(message, duration = 3000) {
+            notificationText.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, duration);
+        }
+        
+        // 查询单词
+        function searchWord() {
+            const word = wordInput.value.trim().toLowerCase();
+            
+            if (!word) {
+                showNotification('请输入要查询的单词');
+                wordInput.focus();
+                return;
+            }
+            
+            if (dictionary[word]) {
+                // 显示结果
+                wordDisplay.textContent = word;
+                translationDisplay.textContent = dictionary[word].translation;
+                exampleDisplay.textContent = dictionary[word].example;
+                resultBox.style.display = 'block';
+                
+                // 滚动到结果
+                resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+                showNotification(`查询成功: ${word} → ${dictionary[word].translation}`);
+                
+                // 更新统计（模拟学习）
+                const currentTotal = parseInt(totalWordsEl.textContent);
+                if (!isNaN(currentTotal) && currentTotal < 200) {
+                    totalWordsEl.textContent = currentTotal + 1;
+                    
+                    // 随机增加已掌握单词
+                    if (Math.random() > 0.7) {
+                        const currentMastered = parseInt(masteredWordsEl.textContent);
+                        masteredWordsEl.textContent = currentMastered + 1;
+                    }
+                }
+            } else {
+                // 单词不存在，显示建议
+                wordDisplay.textContent = word;
+                translationDisplay.textContent = `[新单词] ${word}`;
+                exampleDisplay.textContent = `This is a new word. Let's learn it together!`;
+                resultBox.style.display = 'block';
+                
+                showNotification(`新单词: ${word}，已添加到学习列表`);
+                
+                // 添加到词典（模拟）
+                dictionary[word] = {
+                    translation: `[学习中的单词]`,
+                    example: `Learning new word: ${word}`
+                };
+                
+                // 更新统计
+                const currentTotal = parseInt(totalWordsEl.textContent);
+                totalWordsEl.textContent = currentTotal + 1;
+            }
+            
+            // 清空输入框
+            wordInput.value = '';
+        }
+        
+        // 显示功能提示
+        function showFeature(feature) {
+            const messages = {
+                'vocabulary': '生词本功能：管理你的学习单词，按分类整理',
+                'review': '智能复习：基于艾宾浩斯记忆曲线，科学安排复习',
+                'stats': '学习统计：可视化学习进度，激励持续学习',
+                'reminder': '学习提醒：定时提醒复习，培养学习习惯'
+            };
+            
+            showNotification(messages[feature]);
+            
+            // 添加震动反馈（如果支持）
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+        
+        // 事件监听
+        searchBtn.addEventListener('click', searchWord);
+        wordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchWord();
+            }
+        });
+        
+        // 页面加载时初始化
+        window.addEventListener('load', () => {
+            updateStats();
+            showNotification('WordMemeray预览页面已加载完成！', 2000);
+            
+            // 自动聚焦输入框
+            wordInput.focus();
+            
+            // 添加一些初始动画
+            document.querySelectorAll('.feature').forEach((feature, index) => {
+                feature.style.animationDelay = `${index * 0.1}s`;
+                feature.style.animation = 'fadeInUp 0.5s ease forwards';
+            });
+            
+            // 添加CSS动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                .feature {
+                    opacity: 0;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // 添加一些交互效果
+        document.querySelectorAll('.feature').forEach(feature => {
+            feature.addEventListener('mouseenter', () => {
+                feature.style.transform = 'translateY(-4px) scale(1.02)';
+            });
+            
+            feature.addEventListener('mouseleave', () => {
+                feature.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        // 添加键盘快捷键
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + K 聚焦搜索框
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                wordInput.focus();
+                wordInput.select();
+            }
+            
+            // Esc 清空搜索框
+            if (e.key === 'Escape') {
+                wordInput.value = '';
+                wordInput.focus();
+            }
+            
