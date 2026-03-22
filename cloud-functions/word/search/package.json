@@ -1,9 +1,0 @@
-{
-  "name": "word-search",
-  "version": "1.0.0",
-  "description": "生词搜索云函数",
-  "main": "index.js",
-  "dependencies": {
-    "wx-server-sdk": "latest"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "name": "review-get-today",
-  "version": "1.0.0",
-  "description": "获取今日复习生词云函数 (艾宾浩斯算法)",
-  "main": "index.js",
-  "dependencies": {
-    "wx-server-sdk": "latest"
-  }
-}
