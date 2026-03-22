@@ -1,0 +1,91 @@
+<!-- 添加单词页面 -->
+<view class="container">
+  <view class="header">
+    <text class="title">➕ 添加单词</text>
+  </view>
+  
+  <view class="form-card">
+    <view class="form-group">
+      <text class="label">英文单词</text>
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="输入英文单词" 
+        value="{{englishWord}}"
+        bindinput="onEnglishInput"
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">中文释义</text>
+      <textarea 
+        class="textarea" 
+        placeholder="输入中文释义" 
+        value="{{chineseMeaning}}"
+        bindinput="onChineseInput"
+        auto-height
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">音标</text>
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="例如: /həˈləʊ/" 
+        value="{{phonetic}}"
+        bindinput="onPhoneticInput"
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">例句</text>
+      <textarea 
+        class="textarea" 
+        placeholder="输入例句（可选）" 
+        value="{{example}}"
+        bindinput="onExampleInput"
+        auto-height
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">分类</text>
+      <picker 
+        class="picker" 
+        range="{{categories}}" 
+        value="{{categoryIndex}}"
+        bindchange="onCategoryChange"
+      >
+        <view class="picker-view">
+          {{categories[categoryIndex] || '选择分类'}}
+        </view>
+      </picker>
+    </view>
+  </view>
+  
+  <view class="action-buttons">
+    <button class="btn translate-btn" bindtap="translateWord">
+      🔄 翻译
+    </button>
+    <button class="btn save-btn" bindtap="saveWord" disabled="{{!canSave}}">
+      💾 保存单词
+    </button>
+  </view>
+  
+  <!-- 翻译结果 -->
+  <view class="translation-card" wx:if="{{translationResult}}">
+    <text class="card-title">翻译结果</text>
+    <view class="translation-item">
+      <text class="label">原文:</text>
+      <text class="value">{{translationResult.original}}</text>
+    </view>
+    <view class="translation-item">
+      <text class="label">翻译:</text>
+      <text class="value">{{translationResult.translated}}</text>
+    </view>
+    <button class="btn use-translation-btn" bindtap="useTranslation">
+      使用此翻译
+    </button>
+  </view>
+</view>
